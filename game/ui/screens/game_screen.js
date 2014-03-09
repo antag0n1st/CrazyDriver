@@ -10,6 +10,8 @@
     GameScreen.prototype.initialize = function() {
         this.screen_initialize();     
         
+        this.back_image = ContentManager.images.parking.image;
+        
         this.player = new Player();
         
         this.player.set_position({x:100,y:200});
@@ -91,6 +93,12 @@
             this.cars[i].move();
         }
      
+    };
+    
+    GameScreen.prototype.draw = function(context){
+        
+        context.drawImage(this.back_image,0,0);
+        
     };
     
     GameScreen.prototype.update_movement = function() {

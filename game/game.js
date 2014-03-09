@@ -28,6 +28,8 @@
 
         ContentManager.add_image('player', 'assets/images/player.png');
         ContentManager.add_image('car', 'assets/images/car.png');
+        ContentManager.add_image('car_animation', 'assets/images/car_animation.png');
+        ContentManager.add_image('parking', 'assets/images/parking.png');
 
         ContentManager.download_images(this.stage, function() {            
             window.game.start();
