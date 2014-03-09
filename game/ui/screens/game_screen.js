@@ -59,6 +59,23 @@
            that.is_right = false;
         });
         
+        //cars
+        this.cars = [];
+        
+        for(i=0;i<3;i++)
+        {
+            var car = new Car();
+            
+            car.start_position = {x:100,y:100};
+            car.end_position = {x:100*i,y:100*i};
+        
+            car.set_position(car.start_position);
+        
+            this.add_child(car);
+            
+            this.cars.push(car);
+        }
+        
     };   
 
     GameScreen.prototype.game_over = function() {
@@ -68,6 +85,11 @@
     GameScreen.prototype.update = function() {
 
         this.update_movement();
+        
+        for(var i in this.cars)
+        {
+            this.cars[i].move();
+        }
      
     };
     
@@ -129,9 +151,6 @@
             return;
         }
         
-       
-     
-
     };
 
     GameScreen.prototype.show = function() {
