@@ -69,7 +69,6 @@
 
         this.update_movement();
      
-
     };
     
     GameScreen.prototype.update_movement = function() {
