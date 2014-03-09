@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>HTML5 Framework</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+        <script type="text/javascript" src="lib/sat.js"></script>
+        <script type="text/javascript" src="lib/circle.js" ></script>
+        <script type="text/javascript" src="lib/rect.js" ></script>
+        <script type="text/javascript" src="lib/collision.js" ></script>
+        
+        <script type="text/javascript" src="lib/ticker.js" ></script>
+        <script type="text/javascript" src="lib/drawable.js" ></script>
+        <script type="text/javascript" src="lib/animation.js" ></script>
+        <script type="text/javascript" src="lib/config.js" ></script>
+        <script type="text/javascript" src="lib/content_manager.js" ></script>
+        <script type="text/javascript" src="lib/sprite_sheet.js" ></script>
+        <script type="text/javascript" src="lib/stage.js" ></script>
+        <script type="text/javascript" src="lib/uid.js" ></script>
+        <script type="text/javascript" src="lib/helpers.js" ></script>        
+        <script type="text/javascript" src="lib/event.js" ></script>   
+        <script type="text/javascript" src="lib/input.js"></script>        
+        <script type="text/javascript" src="lib/easystar-0.1.5.js"></script>
+        <script type="text/javascript" src="lib/actions.js"></script>
+        <script type="text/javascript" src="lib/move_to.js"></script>
+        <script type="text/javascript" src="lib/state_machine.js" ></script>
+        
+        <script type="text/javascript" src="game/game.js" ></script>
+
+        <script type="text/javascript" src="lib/screen.js" ></script>
+        <script type="text/javascript" src="lib/game_hud.js" ></script>
+        <script type="text/javascript" src="lib/ui/navigator.js" ></script>
+        <script type="text/javascript" src="lib/ui/button.js" ></script>
+        <script type="text/javascript" src="lib/ui/label.js" ></script>
+        <script type="text/javascript" src="lib/ui/layer.js" ></script>        
+        <script type="text/javascript" src="lib/ui/tableview.js" ></script>
+        <script type="text/javascript" src="lib/ui/tablecell.js" ></script>
+        <script type="text/javascript" src="lib/ui/image_view.js" ></script>        
+
+        <script type="text/javascript" src="game/ui/screens/game_screen.js" ></script>
+        
+        
+        
+        
+        
+    </head>
+    <body>
+        <style type="text/css" scoped="">
+
+            html, body, div, span, applet, object, iframe, 
+            h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
+            a, abbr, acronym, address, big, cite, code, 
+            del, dfn, em, font, img, ins, kbd, q, s, samp, 
+            small, strike, strong, sub, sup, tt, var, 
+            dl, dt, dd, ol, ul, li, 
+            fieldset, form, label, legend, 
+            table, caption, tbody, tfoot, thead, tr, th, td{margin:0; padding:0; border:0; outline:0; font-weight:inherit; font-style:inherit; font-size:100%; font-family:inherit; vertical-align:baseline}
+
+            :focus{outline:0}
+            body{line-height:1; color:black; background:white; text-align: center; font-family: Cambria, serif; background-repeat: no-repeat; }
+            ol, ul{list-style:none}
+
+            table{border-collapse:separate; border-spacing:0}
+            caption, th, td{text-align:left; font-weight:normal}
+            blockquote:before, blockquote:after, 
+            q:before, q:after{content:""}
+            blockquote, q{quotes:""""}
+            strong{font-weight: bold;}
+
+            #stage
+            {
+                -webkit-transform-origin:  0% 0%;
+                transform-origin: 0% 0%;
+                -ms-transform-origin: 0% 0%;
+
+            }
+            ::-moz-selection{
+                background-color:Transparent;
+            }
+            ::selection {
+                background-color:Transparent;
+            }
+            .element{
+                -webkit-transform-origin:  0% 0%;
+                transform-origin: 0% 0%;
+                -ms-transform-origin: 0% 0%;
+            }
+            body{
+                overflow:hidden;
+
+            }
+
+            body{
+                margin: 0 ;
+                padding: 0 ;
+                color: #666666; 
+                line-height: 1.5 ;
+                font-family: Helvetica, Tahoma, Verdana; 
+                font-size: 12px;
+                transform: translateZ(0px);
+                -ms-transform: translateZ(0px); /* IE 9 */
+                -moz-transform: translateZ(0px); /* Firefox */
+                -webkit-transform: translateZ(0px); /* Safari and Chrome */
+                -o-transform: translateZ(0px); /* Opera */
+
+
+            }
+            #hud{
+                 -webkit-transform-origin:  0% 0%;
+                transform-origin: 0% 0%;
+                -ms-transform-origin: 0% 0%;
+            }
+        </style>
+        <canvas id="stage" style="position: absolute;z-index: 999;left: 0;top:0;"></canvas>
+        <script type="text/javascript">
+
+                var resource_ids = {};
+
+               if (!Config.is_mobile) {
+                   Config.set_screen_size(800, 480);
+                   var game = new Game();
+               }
+
+               
+              
+        </script>
+
+    </body>
+</html>
