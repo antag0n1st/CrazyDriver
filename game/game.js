@@ -26,6 +26,9 @@
         ContentManager.add_image('blank_black', 'assets/images/blank_black.png');
         ContentManager.add_image('blank_black_highlighted', 'assets/images/blank_black_highlighted.png');
 
+        ContentManager.add_image('player', 'assets/images/player.png');
+        ContentManager.add_image('car', 'assets/images/car.png');
+
         ContentManager.download_images(this.stage, function() {            
             window.game.start();
         });
