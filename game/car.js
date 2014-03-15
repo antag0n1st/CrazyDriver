@@ -25,6 +25,7 @@
         this.end_position = {x: 0, y: 0};
         this.speed = 100 / 1000;
         this.angle = 0;
+        this.current_angle = 0;
         
         this.factor_w=0.7;
         this.factor_h=0.4;
@@ -59,9 +60,10 @@
 
         context.restore();
 
-        //##########################33
-
-        context.beginPath();
+        //##########################
+        
+        if(Config.debug){
+            context.beginPath();
 
         var points = this.collider.points;
 
@@ -89,6 +91,10 @@
         context.closePath();
 
         context.stroke();
+            
+        }
+        
+        
 
     };
 
@@ -105,10 +111,12 @@
 
         this.angle = Math.get_angle(this.start_position, this.end_position);
 
-        var angle_rotate = Math.toRadians(this.angle) - this.collider.angle;
-        this.collider.setAngle(Math.toRadians(this.angle));
+        var angle_rotate = Math.toRadians(this.angle) - Math.toRadians(this.current_angle);
+
+        this.current_angle = this.angle;
+       
         this.collider.rotate(angle_rotate);
-    }
+    };
 
     Car.prototype.move = function() {
         var p = this.get_position();

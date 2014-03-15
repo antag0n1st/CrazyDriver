@@ -94,6 +94,10 @@
         }
 
     };
+    
+    GameScreen.prototype.on_mouse_up = function(event){
+       log(SAT.pointInPolygon(event.point,this.player.collider));
+    };
 
     GameScreen.prototype.generate_random_points = function()
     {
@@ -130,7 +134,7 @@
         }
 
         return points;
-    }
+    };
 
     GameScreen.prototype.car_callback = function(car)
     {
@@ -247,10 +251,12 @@
 
     GameScreen.prototype.show = function() {
         Screen.prototype.show.call(this);
+        game.input.add(this);
     };
 
     GameScreen.prototype.hide = function() {
         Screen.prototype.hide.call(this);
+        game.input.remove(this);
     };
 
     window.GameScreen = GameScreen;
