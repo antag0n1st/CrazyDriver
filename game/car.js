@@ -33,8 +33,45 @@
         this.collider = new SAT.Box(new SAT.Vector(0, 0), this.image.width * this.factor_w, this.image.height * this.factor_h).toPolygon();
         this.collider.translate(-this.image.width*this.factor_w / 2, -this.image.height*this.factor_h / 2);
 
-        this.callback = function() {
-        };
+        this.smoke_frequency = 20/1000; // per second
+        this.smoke_count = 0;
+        this.smoke_time = 0;
+
+        this.callback = function(){};
+    };
+    
+    Car.prototype.smoke = function(){
+        
+        this.smoke_time += Ticker.step;
+        
+        
+        var tp = Math.round(this.smoke_time * this.smoke_frequency);
+        
+        var particles_to_emit = tp - this.smoke_count;
+        
+        this.smoke_count = tp;
+        
+        for(var i=0;i<particles_to_emit;i++){
+            
+                var r1 = Math.random_in_range(0,6);
+                var r2 = Math.random_in_range(0,6);
+
+                var angle = Math.get_angle(this.collider.pos,this.start_position);
+                var back_point = Math.get_next_point(this.collider.pos,35,angle);
+
+                back_point.x += r1 - 3;
+                back_point.y += r2 - 3;
+
+                var smoke = new Smoke();
+
+                smoke.set_position(back_point);
+                this.get_parent().add_child(smoke); // the smoke will be a sibling
+        }
+        
+        
+       
+        
+        
     };
 
     Car.prototype.on_added_to_parent = function(parent) {
@@ -142,7 +179,7 @@
         Drawable.prototype.set_position.call(this, point);
 
         this.collider.pos = new SAT.Vector(point.x, point.y);
-    }
+    };
 
     window.Car = Car;
 

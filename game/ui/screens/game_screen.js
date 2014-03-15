@@ -153,11 +153,17 @@
         {
             //movement for the player
             this.update_movement();
+            
 
             for (var i in this.cars)
             {
-                this.cars[i].move();
-                if (SAT.testPolygonPolygon(this.player.collider, this.cars[i].collider))
+                var car = this.cars[i];
+                
+                car.move();
+                
+                car.smoke(); // leave a trail of smoke
+                
+                if (SAT.testPolygonPolygon(this.player.collider, car.collider))
                 {
                     this.game_over();
                 }

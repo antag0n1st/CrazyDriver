@@ -31,6 +31,7 @@
         ContentManager.add_image('car2', 'assets/images/car2.png')
         ContentManager.add_image('car_animation', 'assets/images/car_animation.png');
         ContentManager.add_image('parking', 'assets/images/parking.png');
+        ContentManager.add_image('smoke', 'assets/images/smoke.png');
 
         ContentManager.download_images(this.stage, function() {            
             window.game.start();
