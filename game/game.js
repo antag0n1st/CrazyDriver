@@ -43,7 +43,7 @@
 
     Game.prototype.start = function() {
 
-        this.navigator.add(new GameScreen());
+        this.navigator.add(new TestScreen());
         
         // we want to do some work before we update the canvas,
         // otherwise we could use Ticker.addListener(stage);
