@@ -28,6 +28,7 @@
 
         ContentManager.add_image('player', 'assets/images/player.png');
         ContentManager.add_image('car', 'assets/images/car.png');
+        ContentManager.add_image('car2', 'assets/images/car2.png')
         ContentManager.add_image('car_animation', 'assets/images/car_animation.png');
         ContentManager.add_image('parking', 'assets/images/parking.png');
 

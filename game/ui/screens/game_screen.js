@@ -14,7 +14,9 @@
 
         this.player = new Player();
 
-        this.player.set_position({x: 100, y: 200});
+        this.player.angle = 270;
+
+        this.player.set_position({x: 590, y: 460});
 
         this.car_size;
 
@@ -26,6 +28,8 @@
         this.is_up = false;
         this.is_left = false;
         this.is_right = false;
+        
+        this.is_game_over = false;
 
         this.player_speed = 1;
 
@@ -66,21 +70,27 @@
         //cars
         this.cars = [];
 
-        for (i = 0; i < 3; i++)
+        for (i = 0; i < 7; i++)
         {
-            var car = new Car();
-            car.callback = GameScreen.prototype.car_callback.bind(this);
+            var that = this;
+            setTimeout(function() {
 
-            this.car_size = Math.sqrt(Math.pow(car.bounds.width, 2) + Math.pow(car.bounds.height, 2));
+                var car = new Car();
+                car.callback = GameScreen.prototype.car_callback.bind(that);
+
+                that.car_size = Math.sqrt(Math.pow(car.bounds.width, 2) + Math.pow(car.bounds.height, 2));
 
 
-            var points = this.generate_random_points();
+                var points = that.generate_random_points();
 
-            car.reset_position(points);
+                car.reset_position(points);
 
-            this.add_child(car);
+                that.add_child(car);
 
-            this.cars.push(car);
+                that.cars.push(car);
+
+            }, i * 700);
+
         }
 
     };
@@ -135,12 +145,21 @@
 
     GameScreen.prototype.update = function() {
 
-        this.update_movement();
-
-        for (var i in this.cars)
+        if (!this.is_game_over)
         {
-            this.cars[i].move();
+            //movement for the player
+            this.update_movement();
+
+            for (var i in this.cars)
+            {
+                this.cars[i].move();
+                if (SAT.testPolygonPolygon(this.player.collider, this.cars[i].collider))
+                {
+                    this.game_over();
+                }
+            }
         }
+
 
     };
 
@@ -152,9 +171,12 @@
 
     GameScreen.prototype.update_movement = function() {
 
+        this.player.play("run");
+
         if (this.is_right && this.is_down)
         {
             var p = this.player.get_position();
+            this.player.angle = 45;
             this.player.set_position({x: p.x + this.player_speed, y: p.y + this.player_speed});
             return;
         }
@@ -162,6 +184,7 @@
         if (this.is_right && this.is_up)
         {
             var p = this.player.get_position();
+            this.player.angle = 315;
             this.player.set_position({x: p.x + this.player_speed, y: p.y - this.player_speed});
             return;
         }
@@ -169,6 +192,7 @@
         if (this.is_left && this.is_down)
         {
             var p = this.player.get_position();
+            this.player.angle = 135;
             this.player.set_position({x: p.x - this.player_speed, y: p.y + this.player_speed});
             return;
         }
@@ -176,6 +200,7 @@
         if (this.is_left && this.is_up)
         {
             var p = this.player.get_position();
+            this.player.angle = 225;
             this.player.set_position({x: p.x - this.player_speed, y: p.y - this.player_speed});
             return;
         }
@@ -183,6 +208,7 @@
         if (this.is_down)
         {
             var p = this.player.get_position();
+            this.player.angle = 90;
             this.player.set_position({x: p.x, y: p.y + this.player_speed});
             return;
         }
@@ -190,6 +216,7 @@
         if (this.is_up)
         {
             var p = this.player.get_position();
+            this.player.angle = 270;
             this.player.set_position({x: p.x, y: p.y - this.player_speed});
             return;
         }
@@ -197,6 +224,7 @@
         if (this.is_left)
         {
             var p = this.player.get_position();
+            this.player.angle = 180;
             this.player.set_position({x: p.x - this.player_speed, y: p.y});
             return;
         }
@@ -204,11 +232,18 @@
         if (this.is_right)
         {
             var p = this.player.get_position();
+            this.player.angle = 0;
             this.player.set_position({x: p.x + this.player_speed, y: p.y});
             return;
         }
 
+        this.player.play("idle");
     };
+
+    GameScreen.prototype.checkCollisions = function()
+    {
+
+    }
 
     GameScreen.prototype.show = function() {
         Screen.prototype.show.call(this);
