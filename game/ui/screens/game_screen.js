@@ -76,10 +76,7 @@
 
             var points = this.generate_random_points();
 
-            car.start_position = points[0];
-            car.end_position = points[1];
-
-            car.set_position(car.start_position);
+            car.reset_position(points);
 
             this.add_child(car);
 
@@ -129,10 +126,7 @@
     {
         var points = this.generate_random_points();
 
-        car.start_position = points[0];
-        car.end_position = points[1];
-        
-        car.set_position(car.start_position);
+        car.reset_position(points);
     };
 
     GameScreen.prototype.game_over = function() {
