@@ -11,11 +11,16 @@
         this.screen_initialize();
 
         this.back_image = ContentManager.images.parking.image;
+        
+        this.level;
+        this.level_points;
+        this.points;
+        
+        this.hud = new Hud();
+        this.hud.z_index = 5;
+        this.hud.set_position(0, 0);
 
         this.player = new Player();
-
-
-        
 
         this.win_car_poss = [{x: 46, y: 50}, {x: 100, y: 50}, {x: 152, y: 50}, {x: 204, y: 50}, {x: 46, y: 180}, {x: 46, y: 250} ];
         
@@ -35,6 +40,7 @@
 
         this.add_child(this.player);
         this.add_child(this.win_car);
+        this.add_child(this.hud);
         
 
         this.kibo = new Kibo();
