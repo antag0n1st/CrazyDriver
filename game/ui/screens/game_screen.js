@@ -157,7 +157,7 @@
             //movement for the player
             this.update_movement();
             
-
+            var response = new SAT.Response();
             for (var i in this.cars)
             {
                 var car = this.cars[i];
@@ -168,7 +168,50 @@
                 
                 if (SAT.testPolygonPolygon(this.player.bounds, car.bounds))
                 {
-                    this.game_over();
+                    //this.game_over();
+                }
+                
+                for (var j in this.cars)
+                {
+                    var another_car = this.cars[j];
+
+                    if (car != another_car && SAT.testPolygonPolygon(another_car.bounds, car.bounds, response))
+                    {
+                        //response.a.pos.sub(response.overlapV);
+                        var resolve_pos = response.a.pos.clone();
+                        resolve_pos.sub(response.overlapV);
+                        another_car.set_position(resolve_pos.x, resolve_pos.y);
+//                        var v1 = another_car.velocity.clone();
+//                        another_car.velocity.add(car.velocity);
+//                        another_car.velocity.setLength(v1.len());
+                        
+//                        var side_s = this.get_side_for_point(car.start_position);
+//                        var side_e = this.get_side_for_point(car.end_position);
+//
+//                        var all_sides = [0, 1, 2, 3];
+//
+//                        all_sides.splice(all_sides.indexOf[side_s], 1);
+//                        all_sides.splice(all_sides.indexOf[side_e], 1);
+//
+//                        var points = this.generate_random_points_on_sides(all_sides[0], all_sides[1]);
+//
+//                        car.reset_position([car.position, points[Math.random_in_range(0, 1)]]);
+//
+//
+//                        side_s = this.get_side_for_point(another_car.start_position);
+//                        side_e = this.get_side_for_point(another_car.end_position);
+//
+//                        all_sides = [0, 1, 2, 3];
+//
+//                        all_sides.splice(all_sides.indexOf[side_s], 1);
+//                        all_sides.splice(all_sides.indexOf[side_e], 1);
+//
+//                        points = this.generate_random_points_on_sides(all_sides[0], all_sides[1]);
+//
+//                        another_car.reset_position([another_car.position, points[Math.random_in_range(0, 1)]]);
+                        
+                        response.clear();
+                    }
                 }
             }
         }
