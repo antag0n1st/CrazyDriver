@@ -59,7 +59,10 @@
 //        context.rotate((this.angle + 90) * Math.PI / 180);
 //        context.translate(-xx, -center.y);
         Animation.prototype.draw.call(this, context);
-        this.debug_bounds(context);
+        if(Config.debug){
+            this.debug_bounds(context);
+        }
+        
 //
 //        context.restore();
 //

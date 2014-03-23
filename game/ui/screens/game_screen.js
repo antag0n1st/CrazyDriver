@@ -15,8 +15,7 @@
         this.player = new Player();
 
 
-        this.player.set_position(580, 460);
-        this.player.rotate_to(0);
+        
 
         this.win_car_poss = [{x: 46, y: 50}, {x: 100, y: 50}, {x: 152, y: 50}, {x: 204, y: 50}, {x: 46, y: 180}, {x: 46, y: 250} ];
         
@@ -24,13 +23,13 @@
         this.win_car_start_angle = Math.random_int(0, 1);
 
         this.win_car = new WinCar();
-        this.win_car.set_position(100,60);
+        
         
         this.market = new Box(new Vector(500,425),165,55).toPolygon();
         
         this.alert = new Alert(1);
         this.alert.set_position(Config.screen_width/2 - this.alert.width/2,Config.screen_height/2 - this.alert.height/2);
-        this.alert.on_restart = GameScreen.prototype.on_restart_game.bind(this);
+        this.alert.callback = GameScreen.prototype.on_restart_game.bind(this);
         
         this.car_size;
 
@@ -86,10 +85,35 @@
 
         //cars
         this.cars = [];
+        this.level = 1;
+        this.start_cars = 5;
+        this.level_difficulty = 1;
+        
+        this.reset_game_objects();
 
-        for (i = 0; i < 14; i++)
+
+    };
+    
+    GameScreen.prototype.reset_game_objects = function(){
+        
+        var num = this.start_cars + this.level;
+        var that = this;
+        
+        var pps = this.win_car_poss[this.win_car_pos];
+        this.win_car.set_position(pps.x,pps.y);
+        
+        this.player.set_position(580, 460);
+        this.player.rotate_to(0);
+        
+        for(var i=0;i<this.cars.length;i++){
+            this.cars[i].remove_from_parent();
+        }
+        
+        this.cars = [];
+        
+        for (var i = 0; i < num; i++)
         {
-            var that = this;
+            
             setTimeout(function() {
 
                 var car = new Car();
@@ -109,8 +133,6 @@
             }, i * 700);
 
         }
-
-
     };
 
     GameScreen.prototype.on_mouse_up = function(event) {
@@ -174,9 +196,9 @@
     };
     
     GameScreen.prototype.on_restart_game = function(){
-        Alert.prototype.on_restart.call(this.alert);
-        
-        log("restart button cliced");
+       this.reset_game_objects();
+       this.is_game_over = false;
+       this.is_win_car_reach = false;
         
     };
 

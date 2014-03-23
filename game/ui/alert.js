@@ -47,7 +47,9 @@
         this.add_child(this.title);
         this.add_child(this.cost_label);
        
+        this.callback = function(){};
         
+        this.z_index = 10;
         
         
     };
@@ -65,6 +67,7 @@
     Alert.prototype.on_restart = function(event){
         event.stop_propagation();
         this.remove_from_parent();
+        this.callback();
     };
     
     Alert.prototype.on_mouse_down = function(event){

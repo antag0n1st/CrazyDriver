@@ -73,7 +73,7 @@ Car.prototype = new Animation();
         }
 
 
-
+        this.play('drive');
 
 
      };

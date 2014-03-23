@@ -28,8 +28,10 @@
         
         var pos = this.bounds.pos;
         context.drawImage(this.image,pos.x,pos.y);
+        if(Config.debug){
+            this.debug_bounds(context);
+        }
         
-        this.debug_bounds(context);
         
     };
     
