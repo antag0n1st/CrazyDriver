@@ -15,17 +15,14 @@
                     run: {start: 0, end: 7, loop: true, duration: 800},
                     idle: {start: 2, end: 2, loop: true, duration: 100}
                 }
-                , reg: {x: 0.5, y: 0.5, width: 1.0, height: 1.0}
+                , reg: {x: 0.5, y: 0.6, width: 0.4, height: 0.8}
             }]);
 
         this.animation_initialize(sprite_sheet);
 
-        // this.image = ContentManager.images.car.image;
-
-        this.start_position = {x: 0, y: 0};
-        this.end_position = {x: 0, y: 0};
+    
         this.speed = 100 / 1000;
-        this.angle = 0;
+
         this.current_angle = 0;
         
         this.factor_w=0.9;
@@ -52,49 +49,50 @@
 
     Player.prototype.draw = function(context) {
 
-        context.save();
-
-        var center = this.bounds.get_center();
-        var xx = center.x;
-        context.translate(xx, center.y);
-        context.rotate((this.angle + 90) * Math.PI / 180);
-        context.translate(-xx, -center.y);
+//        context.save();
+//
+//        var center = this.bounds.get_center();
+//        var xx = center.x;
+//        context.translate(xx, center.y);
+//        context.rotate((this.angle + 90) * Math.PI / 180);
+//        context.translate(-xx, -center.y);
         Animation.prototype.draw.call(this, context);
-
-        context.restore();
-
-        //##########################
-        
-        if(Config.debug){
-            context.beginPath();
-
-        var points = this.collider.points;
-
-        var pos = this.collider.pos;
-
-        for (var i = 0; i < points.length; i++) {
-
-            if (i == points.length - 1) {
-                var p1 = new SAT.Vector().copy(points[0]);
-                var p2 = new SAT.Vector().copy(points[i]);
-            } else {
-                var p1 = new SAT.Vector().copy(points[i]);
-                var p2 = new SAT.Vector().copy(points[i + 1]);
-            }
-
-
-
-            p1.add(pos);
-            p2.add(pos);
-            context.moveTo(p1.x, p1.y);
-            context.lineTo(p2.x, p2.y);
-        }
-
-
-        context.closePath();
-
-        context.stroke();
-        }
+        this.debug_bounds(context);
+//
+//        context.restore();
+//
+//        //##########################
+//        
+//        if(Config.debug){
+//            context.beginPath();
+//
+//        var points = this.collider.points;
+//
+//        var pos = this.collider.pos;
+//
+//        for (var i = 0; i < points.length; i++) {
+//
+//            if (i == points.length - 1) {
+//                var p1 = new SAT.Vector().copy(points[0]);
+//                var p2 = new SAT.Vector().copy(points[i]);
+//            } else {
+//                var p1 = new SAT.Vector().copy(points[i]);
+//                var p2 = new SAT.Vector().copy(points[i + 1]);
+//            }
+//
+//
+//
+//            p1.add(pos);
+//            p2.add(pos);
+//            context.moveTo(p1.x, p1.y);
+//            context.lineTo(p2.x, p2.y);
+//        }
+//
+//
+//        context.closePath();
+//
+//        context.stroke();
+//        }
 
         
 
@@ -115,7 +113,7 @@
 
         if (current_distance <= total_distance)
         {
-            this.set_position(next);
+            this.set_position(next.x,next.y);
         }
         else
         {
@@ -123,13 +121,13 @@
         }
     };
 
-    Player.prototype.set_position = function(point)
+    Player.prototype.set_position = function(x,y)
     {
-        Drawable.prototype.set_position.call(this, point);
+        Drawable.prototype.set_position.call(this, x,y);
 
-        this.collider.pos = new SAT.Vector(point.x, point.y);
+        this.collider.pos = new SAT.Vector(x, y);
         
-        var angle_rotate = Math.toRadians(this.angle) - Math.toRadians(this.current_angle);
+        var angle_rotate = Math.degrees_to_radians(this.angle) - Math.degrees_to_radians(this.current_angle);
 
         this.current_angle = this.angle;
        

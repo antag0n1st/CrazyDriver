@@ -14,9 +14,9 @@
 
         this.player = new Player();
 
-        this.player.angle = 270;
-
-        this.player.set_position({x: 590, y: 460});
+        
+        this.player.set_position(300,300);
+        this.player.rotate_to(270);
 
         this.car_size;
 
@@ -78,8 +78,8 @@
                 var car = new Car();
                 car.callback = GameScreen.prototype.car_callback.bind(that);
 
-                that.car_size = Math.sqrt(Math.pow(car.bounds.width, 2) + Math.pow(car.bounds.height, 2));
-
+                that.car_size = Math.sqrt(Math.pow(car.car_size, 2) + Math.pow(car.car_size, 2));
+               
 
                 var points = that.generate_random_points();
 
@@ -92,6 +92,7 @@
             }, i * 700);
 
         }
+        
 
     };
     
@@ -101,35 +102,37 @@
 
     GameScreen.prototype.generate_random_points = function()
     {
+        
         var points = [];
-        var start_side = Math.random_in_range(0, 3);
-        var end_side = Math.random_in_range(0, 3);
+        var start_side = Math.random_int(0, 3);
+        
+        var end_side = Math.random_int(0, 3);
         while (start_side == end_side)
         {
-            end_side = Math.random_in_range(0, 3);
+            end_side = Math.random_int(0, 3);
         }
 
         if (start_side == 0 || end_side == 0)
         {
             points.push({x: Config.screen_width + this.car_size,
-                y: Math.random_in_range(-this.car_size, Config.screen_height + this.car_size)});
+                y: Math.random_int(-this.car_size, Config.screen_height + this.car_size)});
         }
 
         if (start_side == 1 || end_side == 1)
         {
-            points.push({x: Math.random_in_range(-this.car_size, Config.screen_width + this.car_size),
+            points.push({x: Math.random_int(-this.car_size, Config.screen_width + this.car_size),
                 y: Config.screen_height + this.car_size});
         }
 
         if (start_side == 2 || end_side == 2)
         {
             points.push({x: -this.car_size,
-                y: Math.random_in_range(-this.car_size, Config.screen_height + this.car_size)});
+                y: Math.random_int(-this.car_size, Config.screen_height + this.car_size)});
         }
 
         if (start_side == 3 || end_side == 3)
         {
-            points.push({x: Math.random_in_range(-this.car_size, Config.screen_width + this.car_size),
+            points.push({x: Math.random_int(-this.car_size, Config.screen_width + this.car_size),
                 y: -this.car_size});
         }
 
@@ -163,7 +166,7 @@
                 
                 car.smoke(); // leave a trail of smoke
                 
-                if (SAT.testPolygonPolygon(this.player.collider, car.collider))
+                if (SAT.testPolygonPolygon(this.player.bounds, car.bounds))
                 {
                     this.game_over();
                 }
@@ -186,64 +189,64 @@
         if (this.is_right && this.is_down)
         {
             var p = this.player.get_position();
-            this.player.angle = 45;
-            this.player.set_position({x: p.x + this.player_speed, y: p.y + this.player_speed});
+            this.player.rotate_to(135);
+            this.player.set_position(p.x + this.player_speed,p.y + this.player_speed);
             return;
         }
 
         if (this.is_right && this.is_up)
         {
             var p = this.player.get_position();
-            this.player.angle = 315;
-            this.player.set_position({x: p.x + this.player_speed, y: p.y - this.player_speed});
+            this.player.rotate_to(45);
+            this.player.set_position( p.x + this.player_speed, p.y - this.player_speed);
             return;
         }
 
         if (this.is_left && this.is_down)
         {
             var p = this.player.get_position();
-            this.player.angle = 135;
-            this.player.set_position({x: p.x - this.player_speed, y: p.y + this.player_speed});
+            this.player.rotate_to(225);
+            this.player.set_position(p.x - this.player_speed,  p.y + this.player_speed);
             return;
         }
 
         if (this.is_left && this.is_up)
         {
             var p = this.player.get_position();
-            this.player.angle = 225;
-            this.player.set_position({x: p.x - this.player_speed, y: p.y - this.player_speed});
+            this.player.rotate_to(-45);
+            this.player.set_position( p.x - this.player_speed, p.y - this.player_speed);
             return;
         }
 
         if (this.is_down)
         {
             var p = this.player.get_position();
-            this.player.angle = 90;
-            this.player.set_position({x: p.x, y: p.y + this.player_speed});
+            this.player.rotate_to(180);
+            this.player.set_position( p.x, p.y + this.player_speed);
             return;
         }
 
         if (this.is_up)
         {
             var p = this.player.get_position();
-            this.player.angle = 270;
-            this.player.set_position({x: p.x, y: p.y - this.player_speed});
+            this.player.rotate_to(0);
+            this.player.set_position( p.x, p.y - this.player_speed);
             return;
         }
 
         if (this.is_left)
         {
             var p = this.player.get_position();
-            this.player.angle = 180;
-            this.player.set_position({x: p.x - this.player_speed, y: p.y});
+            this.player.rotate_to(-90);
+            this.player.set_position(p.x - this.player_speed, p.y);
             return;
         }
 
         if (this.is_right)
         {
             var p = this.player.get_position();
-            this.player.angle = 0;
-            this.player.set_position({x: p.x + this.player_speed, y: p.y});
+            this.player.rotate_to(90);
+            this.player.set_position( p.x + this.player_speed, p.y);
             return;
         }
 

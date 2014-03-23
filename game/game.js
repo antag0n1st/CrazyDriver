@@ -25,13 +25,11 @@
         
         ContentManager.add_image('blank_black', 'assets/images/blank_black.png');
         ContentManager.add_image('blank_black_highlighted', 'assets/images/blank_black_highlighted.png');
-
-        ContentManager.add_image('player', 'assets/images/player.png');
-        ContentManager.add_image('car', 'assets/images/car.png');
-        ContentManager.add_image('car2', 'assets/images/car2.png')
-        ContentManager.add_image('car_animation', 'assets/images/car_animation.png');
-        ContentManager.add_image('parking', 'assets/images/parking.png');
         ContentManager.add_image('smoke', 'assets/images/smoke.png');
+        
+        ContentManager.add_image('car_animation', 'assets/images/car_animation.png');
+        ContentManager.add_image('player', 'assets/images/player.png');
+        ContentManager.add_image('parking', 'assets/images/parking.png');
 
         ContentManager.download_images(this.stage, function() {            
             window.game.start();
