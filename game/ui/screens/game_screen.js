@@ -25,7 +25,8 @@
         
         this.alert = new Alert(1);
         this.alert.set_position(Config.screen_width/2 - this.alert.width/2,Config.screen_height/2 - this.alert.height/2);
-
+        this.alert.on_restart = GameScreen.prototype.on_restart_game.bind(this);
+        
         this.car_size;
 
         this.add_child(this.player);
@@ -158,7 +159,19 @@
 
     GameScreen.prototype.game_over = function() {
         this.is_game_over = true;
+        this.player.play('idle');
         this.add_child(this.alert);
+    };
+    
+    GameScreen.prototype.game_win = function(){
+        
+    };
+    
+    GameScreen.prototype.on_restart_game = function(){
+        Alert.prototype.on_restart.call(this.alert);
+        
+        log("restart button cliced");
+        
     };
 
     GameScreen.prototype.update = function() {

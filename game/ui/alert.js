@@ -38,7 +38,7 @@
         this.cancel_button.text = "cancel";
         this.cancel_button.text_color = "#ffffff";
         this.cancel_button.font_size = 11;
-        this.cancel_button.on_mouse_up = Alert.prototype.on_cancel.bind(this);
+        this.cancel_button.on_mouse_up = Alert.prototype.on_restart.bind(this);
         this.cancel_button.priority = 20;
         
         this.layout();
@@ -62,7 +62,7 @@
     };
     
     
-    Alert.prototype.on_cancel = function(event){
+    Alert.prototype.on_restart = function(event){
         event.stop_propagation();
         this.remove_from_parent();
     };
