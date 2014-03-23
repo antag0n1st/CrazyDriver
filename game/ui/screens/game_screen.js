@@ -74,7 +74,7 @@
         //cars
         this.cars = [];
 
-        for (i = 0; i < 7; i++)
+        for (i = 0; i < 14; i++)
         {
             var that = this;
             setTimeout(function() {
@@ -161,7 +161,7 @@
             //movement for the player
             this.update_movement();
             
-
+            var response = new SAT.Response();
             for (var i in this.cars)
             {
                 var car = this.cars[i];
@@ -172,12 +172,27 @@
                 
                 if (SAT.testPolygonPolygon(this.player.bounds, car.bounds))
                 {
-                    this.game_over();
+                    //this.game_over();
+                }
+                
+                for (var j in this.cars)
+                {
+                    var another_car = this.cars[j];
+
+                    if (car != another_car && SAT.testPolygonPolygon(another_car.bounds, car.bounds, response))
+                    {
+                        var resolve_pos = response.a.pos.clone();
+                        resolve_pos.sub(response.overlapV);
+                        another_car.set_position(resolve_pos.x, resolve_pos.y);
+                        var angle = Math.random_int(0, 30);
+                        another_car.velocity.setAngle(Math.degrees_to_radians(another_car.angle-15+angle-90));
+                        another_car.rotate_to(another_car.angle-15+angle);
+                        
+                        response.clear();
+                    }
                 }
             }
         }
-
-
     };
 
     GameScreen.prototype.draw = function(context) {

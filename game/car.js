@@ -58,6 +58,8 @@
         var distance_to_travel =  Math.get_distance(this.start_position,this.end_position);
         
         if(distance_traveled >= distance_to_travel){
+            if(this.bounds.pos.x>Config.screen_width || this.bounds.pos.x<0
+                || this.bounds.pos.y>Config.screen_height || this.bounds.pos.y<0)
             this.callback(this);
         }
         
