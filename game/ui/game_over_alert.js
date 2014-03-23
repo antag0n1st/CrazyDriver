@@ -1,12 +1,12 @@
 (function(window,undefined){
     
-    function Alert(level_completed){
+    function GameOverAlert(level_completed){
         this.initialize(level_completed);
     }    
     
-    Alert.prototype = new Drawable();
-    Alert.prototype.drawable_initialize = Alert.prototype.initialize;    
-    Alert.prototype.initialize = function(level_completed){        
+    GameOverAlert.prototype = new Drawable();
+    GameOverAlert.prototype.drawable_initialize = GameOverAlert.prototype.initialize;    
+    GameOverAlert.prototype.initialize = function(level_completed){        
         this.drawable_initialize();
         
               
@@ -16,7 +16,7 @@
         
         this.title = new Label();
         this.title.set({
-            text: "Level Completed: "+ level_completed ,
+            text: "Game Over" ,
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
@@ -26,7 +26,7 @@
         
         this.cost_label = new Label();
         this.cost_label.set({
-            text: "NEXT: "+ (level_completed + 1) ,
+            text: "Reload Game" ,
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
@@ -35,10 +35,10 @@
         
                 
         this.cancel_button = new Button({image:ContentManager.images.blank_black});
-        this.cancel_button.text = "cancel";
+        this.cancel_button.text = "Reload";
         this.cancel_button.text_color = "#ffffff";
         this.cancel_button.font_size = 11;
-        this.cancel_button.on_mouse_up = Alert.prototype.on_restart.bind(this);
+        this.cancel_button.on_mouse_up = GameOverAlert.prototype.on_restart.bind(this);
         this.cancel_button.priority = 20;
         
         this.layout();
@@ -54,7 +54,7 @@
         
     };
     
-    Alert.prototype.layout = function(){
+    GameOverAlert.prototype.layout = function(){
         
         var padding = 10;
         this.title.set_position(this.width/2 - this.title.width/2,40);
@@ -64,17 +64,17 @@
     };
     
     
-    Alert.prototype.on_restart = function(event){
+    GameOverAlert.prototype.on_restart = function(event){
         event.stop_propagation();
         this.remove_from_parent();
         this.callback();
     };
     
-    Alert.prototype.on_mouse_down = function(event){
+    GameOverAlert.prototype.on_mouse_down = function(event){
         event.stop_propagation();
     };
     
-    Alert.prototype.on_added_to_parent = function(parent){
+    GameOverAlert.prototype.on_added_to_parent = function(parent){
         Drawable.prototype.on_added_to_parent.call(this,parent);
         
         game.input.add(this);
@@ -82,14 +82,14 @@
         
     };
     
-    Alert.prototype.on_remove_from_parent = function(parent){
+    GameOverAlert.prototype.on_remove_from_parent = function(parent){
         Drawable.prototype.on_remove_from_parent.call(this,parent);
         
         game.input.remove(this);
         game.input.remove(this.cancel_button);
     };
     
-    Alert.prototype.draw = function(context){
+    GameOverAlert.prototype.draw = function(context){
         var position = this.bounds.pos.clone();
         context.save();
         context.beginPath();
@@ -106,10 +106,10 @@
         
     };
     
-    Alert.prototype.clear = function(context){
+    GameOverAlert.prototype.clear = function(context){
         
     };
     
-    window.Alert = Alert;
+    window.GameOverAlert = GameOverAlert;
     
 }(window));

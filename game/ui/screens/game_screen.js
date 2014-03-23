@@ -42,9 +42,13 @@
 
         this.market = new Box(new Vector(500, 425), 165, 55).toPolygon();
 
-        this.alert = new Alert(1);
-        this.alert.set_position(Config.screen_width / 2 - this.alert.width / 2, Config.screen_height / 2 - this.alert.height / 2);
-        this.alert.callback = GameScreen.prototype.on_restart_game.bind(this);
+        win_alert = this.win_alert = new GameWinAlert(1);
+        this.win_alert.set_position(Config.screen_width / 2 - this.win_alert.width / 2, Config.screen_height / 2 - this.win_alert.height / 2);
+        this.win_alert.callback = GameScreen.prototype.on_next_level.bind(this);
+
+        this.over_alert = new GameOverAlert(1);
+        this.over_alert.set_position(Config.screen_width / 2 - this.over_alert.width / 2, Config.screen_height / 2 - this.over_alert.height / 2);
+        this.over_alert.callback = GameScreen.prototype.on_restart_game.bind(this);
 
         this.car_size;
 
@@ -198,11 +202,14 @@
     GameScreen.prototype.game_over = function() {
         this.is_game_over = true;
         this.player.play('idle');
-        this.add_child(this.alert);
+        this.add_child(this.over_alert);
     };
 
     GameScreen.prototype.game_win = function() {
-
+        this.is_game_over = true;
+        this.player.play('idle');
+        this.win_alert.level = this.level;
+        this.add_child(this.win_alert);
     };
 
     GameScreen.prototype.on_restart_game = function() {
@@ -210,6 +217,13 @@
         this.is_game_over = false;
         this.is_win_car_reach = false;
 
+    };
+    
+    GameScreen.prototype.on_next_level = function(){
+        this.level++;
+        this.on_restart_game();
+        this.hud.level = this.level;
+        this.hud.update();
     };
 
     GameScreen.prototype.update = function() {
@@ -228,6 +242,7 @@
                 this.time_passed-=1000;
                 
                 this.hud.level_points = this.level_points;
+                this.hud.level = this.level;
             }
 
                     var response = new SAT.Response();
@@ -247,7 +262,7 @@
             {
                 if (this.is_win_car_reach)
                 {
-                    this.game_over();
+                    this.game_win();
                 }
             }
 
