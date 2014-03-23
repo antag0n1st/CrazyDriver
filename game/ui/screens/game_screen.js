@@ -14,14 +14,20 @@
 
         this.player = new Player();
 
+
+        this.player.set_position(580, 460);
+        this.player.rotate_to(0);
+
+        this.win_car_poss = [{x: 46, y: 50}, {x: 100, y: 50}, {x: 152, y: 50}, {x: 204, y: 50}, {x: 46, y: 180}, {x: 46, y: 250} ];
         
-        this.player.set_position(580,400);
-        this.player.rotate_to(270);
-        
+        this.win_car_pos = Math.random_int(0, 5);
+        this.win_car_start_angle = Math.random_int(0, 1);
+
         this.win_car = new WinCar();
-        this.win_car.set_position(100,60);
-        
-        this.market = new Box(new Vector(500,425),165,55).toPolygon();
+        this.win_car.set_position(this.win_car_poss[this.win_car_pos].x, this.win_car_poss[this.win_car_pos].y);
+       // this.win_car.rotate_to(this.win_car_start_angle*180);
+
+        this.market = new Box(new Vector(500, 425), 165, 55).toPolygon();
 
         this.car_size;
 
@@ -34,8 +40,9 @@
         this.is_up = false;
         this.is_left = false;
         this.is_right = false;
-        
+
         this.is_game_over = false;
+        this.is_win_car_reach = false;
 
         this.player_speed = 1;
 
@@ -85,7 +92,7 @@
                 car.callback = GameScreen.prototype.car_callback.bind(that);
 
                 that.car_size = Math.sqrt(Math.pow(car.car_size, 2) + Math.pow(car.car_size, 2));
-               
+
 
                 var points = that.generate_random_points();
 
@@ -98,20 +105,20 @@
             }, i * 700);
 
         }
-        
+
 
     };
-    
-    GameScreen.prototype.on_mouse_up = function(event){
-       log(SAT.pointInPolygon(event.point,this.player.collider));
+
+    GameScreen.prototype.on_mouse_up = function(event) {
+        log(event.point);
     };
 
     GameScreen.prototype.generate_random_points = function()
     {
-        
+
         var points = [];
         var start_side = Math.random_int(0, 3);
-        
+
         var end_side = Math.random_int(0, 3);
         while (start_side == end_side)
         {
@@ -162,21 +169,66 @@
         {
             //movement for the player
             this.update_movement();
-            
+
             var response = new SAT.Response();
+
+            if (SAT.testPolygonPolygon(this.player.bounds, this.win_car.bounds, response))
+            {
+                this.is_win_car_reach = true;
+
+                var resolve_pos = response.a.pos.clone();
+                resolve_pos.sub(response.overlapV);
+                this.player.set_position(resolve_pos.x, resolve_pos.y);
+                
+                response.clear();
+            }
+
+            if (SAT.testPolygonPolygon(this.player.bounds, this.market))
+            {
+                if (this.is_win_car_reach)
+                {
+                    log("yeeee");
+                    this.game_over();
+                }
+            }
+
             for (var i in this.cars)
             {
                 var car = this.cars[i];
-                
+
                 car.move();
-                
+
                 car.smoke(); // leave a trail of smoke
-                
+
                 if (SAT.testPolygonPolygon(this.player.bounds, car.bounds))
                 {
-                    //this.game_over();
+                    this.game_over();
                 }
-                
+
+                if (SAT.testPolygonPolygon(car.bounds, this.win_car.bounds, response))
+                {
+                    var resolve_pos = response.a.pos.clone();
+                    resolve_pos.sub(response.overlapV);
+                    car.set_position(resolve_pos.x, resolve_pos.y);
+                    var angle = Math.random_int(-20, 20);
+                    car.velocity.setAngle(Math.degrees_to_radians(car.angle + angle + 180 - 90));
+                    car.rotate_to(car.angle + angle + 180);
+
+                    response.clear();
+                }
+
+                if (SAT.testPolygonPolygon(car.bounds, this.market, response))
+                {
+                    var resolve_pos = response.a.pos.clone();
+                    resolve_pos.sub(response.overlapV);
+                    car.set_position(resolve_pos.x, resolve_pos.y);
+                    var angle = Math.random_int(-20, 20);
+                    car.velocity.setAngle(Math.degrees_to_radians(car.angle + angle + 180 - 90));
+                    car.rotate_to(car.angle + angle + 180);
+
+                    response.clear();
+                }
+
                 for (var j in this.cars)
                 {
                     var another_car = this.cars[j];
@@ -187,9 +239,9 @@
                         resolve_pos.sub(response.overlapV);
                         another_car.set_position(resolve_pos.x, resolve_pos.y);
                         var angle = Math.random_int(0, 30);
-                        another_car.velocity.setAngle(Math.degrees_to_radians(another_car.angle-15+angle-90));
-                        another_car.rotate_to(another_car.angle-15+angle);
-                        
+                        another_car.velocity.setAngle(Math.degrees_to_radians(another_car.angle - 15 + angle - 90));
+                        another_car.rotate_to(another_car.angle - 15 + angle);
+
                         response.clear();
                     }
                 }
@@ -200,7 +252,7 @@
     GameScreen.prototype.draw = function(context) {
 
         context.drawImage(this.back_image, 0, 0);
-        Drawable.draw_polygon(this.market,context);
+        Drawable.draw_polygon(this.market, context);
 
     };
 
@@ -213,7 +265,7 @@
             var p = this.player.get_position();
             this.player.rotate_to(135);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x,p.y);
+            this.player.set_position(p.x, p.y);
             //this.player.set_position(p.x + this.player_speed,p.y + this.player_speed);
             return;
         }
@@ -223,7 +275,7 @@
             var p = this.player.get_position();
             this.player.rotate_to(45);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x,p.y);
+            this.player.set_position(p.x, p.y);
             return;
         }
 
@@ -232,7 +284,7 @@
             var p = this.player.get_position();
             this.player.rotate_to(225);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x,p.y);
+            this.player.set_position(p.x, p.y);
             return;
         }
 
@@ -241,7 +293,7 @@
             var p = this.player.get_position();
             this.player.rotate_to(-45);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x,p.y);
+            this.player.set_position(p.x, p.y);
             return;
         }
 
@@ -250,7 +302,7 @@
             var p = this.player.get_position();
             this.player.rotate_to(180);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x,p.y);
+            this.player.set_position(p.x, p.y);
             return;
         }
 
@@ -259,16 +311,16 @@
             var p = this.player.get_position();
             this.player.rotate_to(0);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x,p.y);
+            this.player.set_position(p.x, p.y);
             return;
         }
 
         if (this.is_left)
         {
-           var p = this.player.get_position();
+            var p = this.player.get_position();
             this.player.rotate_to(-90);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x,p.y);
+            this.player.set_position(p.x, p.y);
             return;
         }
 
@@ -277,7 +329,7 @@
             var p = this.player.get_position();
             this.player.rotate_to(90);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x,p.y);
+            this.player.set_position(p.x, p.y);
             return;
         }
 
