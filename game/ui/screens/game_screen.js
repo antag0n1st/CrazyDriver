@@ -24,15 +24,18 @@
         this.win_car_start_angle = Math.random_int(0, 1);
 
         this.win_car = new WinCar();
-        this.win_car.set_position(this.win_car_poss[this.win_car_pos].x, this.win_car_poss[this.win_car_pos].y);
-       // this.win_car.rotate_to(this.win_car_start_angle*180);
-
-        this.market = new Box(new Vector(500, 425), 165, 55).toPolygon();
+        this.win_car.set_position(100,60);
+        
+        this.market = new Box(new Vector(500,425),165,55).toPolygon();
+        
+        this.alert = new Alert(1);
+        this.alert.set_position(Config.screen_width/2 - this.alert.width/2,Config.screen_height/2 - this.alert.height/2);
 
         this.car_size;
 
         this.add_child(this.player);
         this.add_child(this.win_car);
+        
 
         this.kibo = new Kibo();
 
@@ -161,6 +164,7 @@
 
     GameScreen.prototype.game_over = function() {
         this.is_game_over = true;
+        this.add_child(this.alert);
     };
 
     GameScreen.prototype.update = function() {
