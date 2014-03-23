@@ -22,6 +22,8 @@
 
     
         this.speed = 100 / 1000;
+        this.velocity = new Vector();
+        this.velocity.setLength(this.speed);
 
         this.current_angle = 0;
         
@@ -102,36 +104,16 @@
 
     };
 
-    Player.prototype.move = function() {
-        var p = this.get_position();
-
-        var distance = this.speed * Ticker.step;
-        var next = Math.get_next_point(p, distance, this.angle);
-
-        var total_distance = Math.get_distance(this.start_position, this.end_position);
-        var current_distance = Math.get_distance(this.start_position, next);
-
-        if (current_distance <= total_distance)
-        {
-            this.set_position(next.x,next.y);
-        }
-        else
-        {
-            this.callback(this);
-        }
+    Player.prototype.rotate_to = function(angle){
+        
+        Drawable.prototype.rotate_to.call(this,angle);
+        this.velocity.setAngle(Math.degrees_to_radians(this.angle-90));
+        
     };
 
     Player.prototype.set_position = function(x,y)
     {
         Drawable.prototype.set_position.call(this, x,y);
-
-        this.collider.pos = new SAT.Vector(x, y);
-        
-        var angle_rotate = Math.degrees_to_radians(this.angle) - Math.degrees_to_radians(this.current_angle);
-
-        this.current_angle = this.angle;
-       
-        this.collider.rotate(angle_rotate);
     };
 
     window.Player = Player;
