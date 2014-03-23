@@ -20,6 +20,8 @@
         
         this.win_car = new WinCar();
         this.win_car.set_position(100,60);
+        
+        this.market = new Box(new Vector(500,425),165,55).toPolygon();
 
         this.car_size;
 
@@ -198,7 +200,7 @@
     GameScreen.prototype.draw = function(context) {
 
         context.drawImage(this.back_image, 0, 0);
-        
+        Drawable.draw_polygon(this.market,context);
 
     };
 

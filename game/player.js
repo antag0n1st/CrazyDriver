@@ -21,7 +21,7 @@
         this.animation_initialize(sprite_sheet);
 
     
-        this.speed = 100 / 1000;
+        this.speed = 70 / 1000;
         this.velocity = new Vector();
         this.velocity.setLength(this.speed);
 
