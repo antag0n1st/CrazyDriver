@@ -11,37 +11,47 @@
         this.screen_initialize();
 
         this.back_image = ContentManager.images.parking.image;
-        
-        this.level;
-        this.level_points;
-        this.points;
-        
+
+        this.level = 1;
+        this.level_points = 0;
+        this.points = 0;
+        this.start_cars = 5;
+        this.level_difficulty = 1;
+
+        this.cars = [];
+
         this.hud = new Hud();
         this.hud.z_index = 5;
         this.hud.set_position(0, 0);
+        this.hud.level = this.level;
+        this.hud.level_points = this.level_points;
+        this.hud.points = this.points;
+
+        this.time_passed = 0;
+        this.current_second = 0;
 
         this.player = new Player();
 
-        this.win_car_poss = [{x: 46, y: 50}, {x: 100, y: 50}, {x: 152, y: 50}, {x: 204, y: 50}, {x: 46, y: 180}, {x: 46, y: 250} ];
-        
+        this.win_car_poss = [{x: 46, y: 50}, {x: 100, y: 50}, {x: 152, y: 50}, {x: 204, y: 50}, {x: 46, y: 180}, {x: 46, y: 250}];
+
         this.win_car_pos = Math.random_int(0, 5);
         this.win_car_start_angle = Math.random_int(0, 1);
 
         this.win_car = new WinCar();
-        
-        
-        this.market = new Box(new Vector(500,425),165,55).toPolygon();
-        
+
+
+        this.market = new Box(new Vector(500, 425), 165, 55).toPolygon();
+
         this.alert = new Alert(1);
-        this.alert.set_position(Config.screen_width/2 - this.alert.width/2,Config.screen_height/2 - this.alert.height/2);
+        this.alert.set_position(Config.screen_width / 2 - this.alert.width / 2, Config.screen_height / 2 - this.alert.height / 2);
         this.alert.callback = GameScreen.prototype.on_restart_game.bind(this);
-        
+
         this.car_size;
 
         this.add_child(this.player);
         this.add_child(this.win_car);
         this.add_child(this.hud);
-        
+
 
         this.kibo = new Kibo();
 
@@ -89,37 +99,31 @@
             that.is_right = false;
         });
 
-        //cars
-        this.cars = [];
-        this.level = 1;
-        this.start_cars = 5;
-        this.level_difficulty = 1;
-        
         this.reset_game_objects();
 
 
     };
-    
-    GameScreen.prototype.reset_game_objects = function(){
-        
+
+    GameScreen.prototype.reset_game_objects = function() {
+
         var num = this.start_cars + this.level;
         var that = this;
-        
+
         var pps = this.win_car_poss[this.win_car_pos];
-        this.win_car.set_position(pps.x,pps.y);
-        
+        this.win_car.set_position(pps.x, pps.y);
+
         this.player.set_position(580, 460);
         this.player.rotate_to(0);
-        
-        for(var i=0;i<this.cars.length;i++){
+
+        for (var i = 0; i < this.cars.length; i++) {
             this.cars[i].remove_from_parent();
         }
-        
+
         this.cars = [];
-        
+
         for (var i = 0; i < num; i++)
         {
-            
+
             setTimeout(function() {
 
                 var car = new Car();
@@ -196,26 +200,37 @@
         this.player.play('idle');
         this.add_child(this.alert);
     };
-    
-    GameScreen.prototype.game_win = function(){
-        
+
+    GameScreen.prototype.game_win = function() {
+
     };
-    
-    GameScreen.prototype.on_restart_game = function(){
-       this.reset_game_objects();
-       this.is_game_over = false;
-       this.is_win_car_reach = false;
-        
+
+    GameScreen.prototype.on_restart_game = function() {
+        this.reset_game_objects();
+        this.is_game_over = false;
+        this.is_win_car_reach = false;
+
     };
 
     GameScreen.prototype.update = function() {
+
 
         if (!this.is_game_over)
         {
             //movement for the player
             this.update_movement();
 
-            var response = new SAT.Response();
+            this.time_passed += Ticker.step;
+
+            if (this.time_passed >= 1000)
+            {
+                this.level_points--;
+                this.time_passed-=1000;
+                
+                this.hud.level_points = this.level_points;
+            }
+
+                    var response = new SAT.Response();
 
             if (SAT.testPolygonPolygon(this.player.bounds, this.win_car.bounds, response))
             {
@@ -224,7 +239,7 @@
                 var resolve_pos = response.a.pos.clone();
                 resolve_pos.sub(response.overlapV);
                 this.player.set_position(resolve_pos.x, resolve_pos.y);
-                
+
                 response.clear();
             }
 
@@ -232,7 +247,6 @@
             {
                 if (this.is_win_car_reach)
                 {
-                    log("yeeee");
                     this.game_over();
                 }
             }
@@ -292,6 +306,8 @@
                 }
             }
         }
+
+        this.hud.update();
     };
 
     GameScreen.prototype.draw = function(context) {

@@ -20,7 +20,7 @@
             text: "Level: ",
             text_align: "left",
             text_valign: 'middle',
-            text_color: "white",
+            text_color: "yellow",
             text_size: 16
         });
         this.level_label.set_position(10, 20);
@@ -30,7 +30,7 @@
             text: "Level points: ",
             text_align: "left",
             text_valign: 'middle',
-            text_color: "white",
+            text_color: "yellow",
             text_size: 16
         });
         this.level_points_label.set_position(120, 20);
@@ -40,7 +40,7 @@
             text: "Points: ",
             text_align: "left",
             text_valign: 'middle',
-            text_color: "white",
+            text_color: "yellow",
             text_size: 16
         });
         this.points_label.set_position(650, 20);
@@ -53,6 +53,12 @@
     Hud.prototype.update = function() {
         this.points_label.set({
             text: "Points: " + this.points
+        });
+        this.level_points_label.set({
+            text: "Level points: " + this.level_points
+        });
+        this.level_label.set({
+            text: "Level: " + this.level
         });
     };
 
