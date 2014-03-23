@@ -22,11 +22,15 @@
         this.win_car.set_position(100,60);
         
         this.market = new Box(new Vector(500,425),165,55).toPolygon();
+        
+        this.alert = new Alert(1);
+        this.alert.set_position(Config.screen_width/2 - this.alert.width/2,Config.screen_height/2 - this.alert.height/2);
 
         this.car_size;
 
         this.add_child(this.player);
         this.add_child(this.win_car);
+        
 
         this.kibo = new Kibo();
 
@@ -154,6 +158,7 @@
 
     GameScreen.prototype.game_over = function() {
         this.is_game_over = true;
+        this.add_child(this.alert);
     };
 
     GameScreen.prototype.update = function() {
