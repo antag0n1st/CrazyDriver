@@ -31,6 +31,7 @@
         ContentManager.add_image('player', 'assets/images/player.png');
         ContentManager.add_image('parking', 'assets/images/parking.png');
         ContentManager.add_image('car', 'assets/images/car.png');
+        ContentManager.add_image('bonus', 'assets/images/clock.jpg');
 
         ContentManager.download_images(this.stage, function() {            
             window.game.start();

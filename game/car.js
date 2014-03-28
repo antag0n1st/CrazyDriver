@@ -101,9 +101,13 @@ Car.prototype = new Animation();
         };
         Car.prototype.rotate_to = function(angle){
 
-        var a = angle - this.angle;
+                var a = angle - this.angle;
                 Drawable.prototype.rotate_to.call(this, angle);
                 this.emiter_point.rotate(Math.degrees_to_radians(a));
+        };
+        Car.prototype.rotate = function(angle){
+                Drawable.prototype.rotate.call(this, angle);
+                this.emiter_point.rotate(Math.degrees_to_radians(angle));
         };
         Car.prototype.clear = function(context){
 

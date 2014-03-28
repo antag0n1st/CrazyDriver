@@ -13,7 +13,7 @@
         this.back_image = ContentManager.images.parking.image;
 
         this.level = 1;
-        this.level_points = 0;
+        this.level_points = 100;
         this.points = 0;
         this.start_cars = 5;
         this.level_difficulty = 1;
@@ -38,9 +38,10 @@
         this.win_car_start_angle = Math.random_int(0, 1);
 
         this.win_car = new WinCar();
+        this.bonus = new Bonus();
 
 
-        this.market = new Box(new Vector(500, 425), 165, 55).toPolygon();
+        this.market = new Box(new Vector(496, 422), 174, 75).toPolygon();
 
         win_alert = this.win_alert = new GameWinAlert(1);
         this.win_alert.set_position(Config.screen_width / 2 - this.win_alert.width / 2, Config.screen_height / 2 - this.win_alert.height / 2);
@@ -55,6 +56,7 @@
         this.add_child(this.player);
         this.add_child(this.win_car);
         this.add_child(this.hud);
+        this.add_child(this.bonus);
 
 
         this.kibo = new Kibo();
@@ -65,7 +67,7 @@
         this.is_right = false;
 
         this.is_game_over = false;
-        this.is_win_car_reach = false;
+        this.state = 0;
 
         this.player_speed = 1;
 
@@ -116,6 +118,8 @@
         var pps = this.win_car_poss[this.win_car_pos];
         this.win_car.set_position(pps.x, pps.y);
 
+        this.bonus.set_position(Math.random_int(30, Config.screen_width - 30), Math.random_int(30, Config.screen_height - 30));
+
         this.player.set_position(580, 460);
         this.player.rotate_to(0);
 
@@ -147,6 +151,7 @@
             }, i * 700);
 
         }
+
     };
 
     GameScreen.prototype.on_mouse_up = function(event) {
@@ -200,12 +205,21 @@
     };
 
     GameScreen.prototype.game_over = function() {
+        this.points = 0;
+        this.hud.points = this.points;
+        this.level = 1;
+        this.hud.level = 1;
+        this.level_points = 100;
         this.is_game_over = true;
         this.player.play('idle');
         this.add_child(this.over_alert);
     };
 
     GameScreen.prototype.game_win = function() {
+        this.points = this.points + this.level_points;
+        this.hud.points = this.points;
+        this.level_points = 100;
+        this.state = 0;
         this.is_game_over = true;
         this.player.play('idle');
         this.win_alert.level = this.level;
@@ -218,8 +232,8 @@
         this.is_win_car_reach = false;
 
     };
-    
-    GameScreen.prototype.on_next_level = function(){
+
+    GameScreen.prototype.on_next_level = function() {
         this.level++;
         this.on_restart_game();
         this.hud.level = this.level;
@@ -239,17 +253,22 @@
             if (this.time_passed >= 1000)
             {
                 this.level_points--;
-                this.time_passed-=1000;
-                
+                this.time_passed -= 1000;
+
                 this.hud.level_points = this.level_points;
                 this.hud.level = this.level;
             }
 
-                    var response = new SAT.Response();
+            var response = new SAT.Response();
 
+            //player win_car collision
             if (SAT.testPolygonPolygon(this.player.bounds, this.win_car.bounds, response))
             {
-                this.is_win_car_reach = true;
+                if (this.state == 0)
+                    this.state = 1;
+
+                if (this.state == 2)
+                    this.game_win();
 
                 var resolve_pos = response.a.pos.clone();
                 resolve_pos.sub(response.overlapV);
@@ -258,51 +277,76 @@
                 response.clear();
             }
 
+            //player market collision
             if (SAT.testPolygonPolygon(this.player.bounds, this.market))
             {
-                if (this.is_win_car_reach)
-                {
-                    this.game_win();
-                }
+                if (this.state == 1)
+                    this.state = 2;
+            }
+
+            //player bonus collision
+            if (SAT.testPolygonPolygon(this.player.bounds, this.bonus.bounds))
+            {
+                this.bonus.set_position(Math.random_int(30, Config.screen_width - 30), Math.random_int(30, Config.screen_height - 30));
+                this.level_points+=5;
+            }
+            
+            //win_car bonus collision
+            while(SAT.testPolygonPolygon(this.win_car.bounds, this.bonus.bounds))
+            {
+                this.bonus.set_position(Math.random_int(30, Config.screen_width - 30), Math.random_int(30, Config.screen_height - 30));
             }
 
             for (var i in this.cars)
             {
                 var car = this.cars[i];
+                var velocity = car.velocity;
 
                 car.move();
 
                 car.smoke(); // leave a trail of smoke
 
+                //player car collision
                 if (SAT.testPolygonPolygon(this.player.bounds, car.bounds))
                 {
                     this.game_over();
                 }
 
+                //car win_car collision
                 if (SAT.testPolygonPolygon(car.bounds, this.win_car.bounds, response))
                 {
-                    var resolve_pos = response.a.pos.clone();
-                    resolve_pos.sub(response.overlapV);
-                    car.set_position(resolve_pos.x, resolve_pos.y);
-                    var angle = Math.random_int(-20, 20);
-                    car.velocity.setAngle(Math.degrees_to_radians(car.angle + angle + 180 - 90));
-                    car.rotate_to(car.angle + angle + 180);
+                    var bounce = response.overlapN;
+                    response.a.pos.sub(response.overlapV);
+
+                    var normal_len = bounce.dot(car.velocity);
+                    var normal = {x: bounce.x * normal_len, y: bounce.y * normal_len};
+                    var new_velocity = new Vector(car.velocity.x - 2 * normal.x, car.velocity.y - 2 * normal.y);
+                    var angle = Math.get_angle_between_vectors(car.velocity, new_velocity);
+                    car.velocity = new_velocity;
+
+                    car.rotate(angle);
 
                     response.clear();
                 }
 
+                //car market collision
                 if (SAT.testPolygonPolygon(car.bounds, this.market, response))
                 {
-                    var resolve_pos = response.a.pos.clone();
-                    resolve_pos.sub(response.overlapV);
-                    car.set_position(resolve_pos.x, resolve_pos.y);
-                    var angle = Math.random_int(-20, 20);
-                    car.velocity.setAngle(Math.degrees_to_radians(car.angle + angle + 180 - 90));
-                    car.rotate_to(car.angle + angle + 180);
+                    var bounce = response.overlapN;
+                    response.a.pos.sub(response.overlapV);
+
+                    var normal_len = bounce.dot(car.velocity);
+                    var normal = {x: bounce.x * normal_len, y: bounce.y * normal_len};
+                    var new_velocity = new Vector(car.velocity.x - 2 * normal.x, car.velocity.y - 2 * normal.y);
+                    var angle = Math.get_angle_between_vectors(car.velocity, new_velocity);
+                    car.velocity = new_velocity;
+
+                    car.rotate(angle);
 
                     response.clear();
                 }
 
+                //car car collision
                 for (var j in this.cars)
                 {
                     var another_car = this.cars[j];
