@@ -58,7 +58,6 @@
         this.add_child(this.hud);
         this.add_child(this.bonus);
 
-
         this.kibo = new Kibo();
 
         this.is_down = false;
@@ -205,13 +204,22 @@
     };
 
     GameScreen.prototype.game_over = function() {
+        this.over_alert.points = this.points;
+        this.over_alert.level = this.level;
+        log(this.over_alert.points);
+        log(this.over_alert.level);
+        
         this.points = 0;
         this.hud.points = this.points;
         this.level = 1;
         this.hud.level = 1;
         this.level_points = 100;
+        this.hud.level_points = this.level_points;
+        this.state = 0;
+        
         this.is_game_over = true;
         this.player.play('idle');
+        
         this.add_child(this.over_alert);
     };
 
@@ -223,13 +231,14 @@
         this.is_game_over = true;
         this.player.play('idle');
         this.win_alert.level = this.level;
+        this.win_alert.points = this.points;
         this.add_child(this.win_alert);
     };
 
     GameScreen.prototype.on_restart_game = function() {
+        
         this.reset_game_objects();
         this.is_game_over = false;
-        this.is_win_car_reach = false;
 
     };
 
@@ -288,11 +297,11 @@
             if (SAT.testPolygonPolygon(this.player.bounds, this.bonus.bounds))
             {
                 this.bonus.set_position(Math.random_int(30, Config.screen_width - 30), Math.random_int(30, Config.screen_height - 30));
-                this.level_points+=5;
+                this.level_points += 5;
             }
-            
+
             //win_car bonus collision
-            while(SAT.testPolygonPolygon(this.win_car.bounds, this.bonus.bounds))
+            while (SAT.testPolygonPolygon(this.win_car.bounds, this.bonus.bounds))
             {
                 this.bonus.set_position(Math.random_int(30, Config.screen_width - 30), Math.random_int(30, Config.screen_height - 30));
             }
@@ -385,7 +394,9 @@
             var p = this.player.get_position();
             this.player.rotate_to(135);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x, p.y);
+            //in of screen
+            if (p.x < Config.screen_width && p.x > 0 && p.y < Config.screen_height && p.y > 0)
+                this.player.set_position(p.x, p.y);
             //this.player.set_position(p.x + this.player_speed,p.y + this.player_speed);
             return;
         }
@@ -395,7 +406,9 @@
             var p = this.player.get_position();
             this.player.rotate_to(45);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x, p.y);
+            //in of screen
+            if (p.x < Config.screen_width && p.x > 0 && p.y < Config.screen_height && p.y > 0)
+                this.player.set_position(p.x, p.y);
             return;
         }
 
@@ -404,7 +417,9 @@
             var p = this.player.get_position();
             this.player.rotate_to(225);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x, p.y);
+            //in of screen
+            if (p.x < Config.screen_width && p.x > 0 && p.y < Config.screen_height && p.y > 0)
+                this.player.set_position(p.x, p.y);
             return;
         }
 
@@ -413,7 +428,9 @@
             var p = this.player.get_position();
             this.player.rotate_to(-45);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x, p.y);
+            //in of screen
+            if (p.x < Config.screen_width && p.x > 0 && p.y < Config.screen_height && p.y > 0)
+                this.player.set_position(p.x, p.y);
             return;
         }
 
@@ -422,7 +439,9 @@
             var p = this.player.get_position();
             this.player.rotate_to(180);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x, p.y);
+            //in of screen
+            if (p.x < Config.screen_width && p.x > 0 && p.y < Config.screen_height && p.y > 0)
+                this.player.set_position(p.x, p.y);
             return;
         }
 
@@ -431,7 +450,9 @@
             var p = this.player.get_position();
             this.player.rotate_to(0);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x, p.y);
+            //in of screen
+            if (p.x < Config.screen_width && p.x > 0 && p.y < Config.screen_height && p.y > 0)
+                this.player.set_position(p.x, p.y);
             return;
         }
 
@@ -440,7 +461,9 @@
             var p = this.player.get_position();
             this.player.rotate_to(-90);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x, p.y);
+            //in of screen
+            if (p.x < Config.screen_width && p.x > 0 && p.y < Config.screen_height && p.y > 0)
+                this.player.set_position(p.x, p.y);
             return;
         }
 
@@ -449,7 +472,9 @@
             var p = this.player.get_position();
             this.player.rotate_to(90);
             p.add(this.player.velocity.clone().scale(Ticker.step));
-            this.player.set_position(p.x, p.y);
+            //in of screen
+            if (p.x < Config.screen_width && p.x > 0 && p.y < Config.screen_height && p.y > 0)
+                this.player.set_position(p.x, p.y);
             return;
         }
 

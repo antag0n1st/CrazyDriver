@@ -12,6 +12,8 @@
         this.image = ContentManager.images.bonus.image;
         this.set_size(this.image.width,this.image.height);
         
+        this.z_index = -1;
+        
     };
     
     Bonus.prototype.on_added_to_parent = function(parent){

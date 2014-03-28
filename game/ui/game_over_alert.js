@@ -12,6 +12,9 @@
               
         this.set_size(250,150);
         
+        this.points=0;
+        this.level=0;
+        
         this.priority = 19;
         
         this.title = new Label();
@@ -23,10 +26,18 @@
             text_size : 16
         });
         
+        this.level_label = new Label();
+        this.level_label.set({
+            text: "Level: " + this.level ,
+            text_align : "left",
+            text_valign: 'middle',
+            text_color : "black",
+            text_size : 16
+        });
         
-        this.cost_label = new Label();
-        this.cost_label.set({
-            text: "Reload Game" ,
+        this.points_label = new Label();
+        this.points_label.set({
+            text: "Points: "+ this.points ,
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
@@ -45,7 +56,8 @@
         
         this.add_child(this.cancel_button);
         this.add_child(this.title);
-        this.add_child(this.cost_label);
+        this.add_child(this.level_label);
+        this.add_child(this.points_label);
        
         this.callback = function(){};
         
@@ -57,10 +69,11 @@
     GameOverAlert.prototype.layout = function(){
         
         var padding = 10;
-        this.title.set_position(this.width/2 - this.title.width/2,40);
+        this.title.set_position(this.width/2 - this.title.width/2,30);
 
-        this.cost_label.set_position(this.width/2 - this.cost_label.width/2,this.title.get_position().y + 40);
-        this.cancel_button.set_position(this.width/2 - this.cancel_button.width/2,this.cost_label.get_position().y + 25);
+        this.level_label.set_position(this.width/2 - this.level_label.width/2,this.title.get_position().y + 30);
+        this.points_label.set_position(this.width/2 - this.points_label.width/2,this.level_label.get_position().y + 30);
+        this.cancel_button.set_position(this.width/2 - this.cancel_button.width/2,this.points_label.get_position().y + 25);
     };
     
     
@@ -79,6 +92,10 @@
         
         game.input.add(this);
         game.input.add(this.cancel_button);  
+        
+         this.level_label.set({text: "Level: "+ (this.level) });
+         
+         this.points_label.set({text: "Points: "+ this.points });
         
     };
     

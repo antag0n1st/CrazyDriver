@@ -19,7 +19,7 @@ Car.prototype = new Animation();
                 this.animation_initialize(sprite_sheet);
                 this.emiter_point = new Vector(5, 35);
                 this.velocity = new Vector(0, 0);
-                this.velocity.setLength(2);
+                this.velocity.setLength(2.5);
                 this.rotation = 50 / 1000;
                 this.car_size = this.image.width;
                 this.smoke_frequency = 20 / 1000; // per second

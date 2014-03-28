@@ -10,6 +10,7 @@
         this.drawable_initialize();
         
         this.level = level_completed;
+        this.points = 0;
         this.set_size(250,150);
         
         this.priority = 19;
@@ -26,7 +27,16 @@
         
         this.next_level_label = new Label();
         this.next_level_label.set({
-            text: "NEXT: "+ (level_completed + 1) ,
+            text: "Next Level: "+ (level_completed + 1) ,
+            text_align : "left",
+            text_valign: 'middle',
+            text_color : "black",
+            text_size : 16
+        });
+        
+        this.points_label = new Label();
+        this.points_label.set({
+            text: "Points: "+ this.points ,
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
@@ -46,6 +56,7 @@
         this.add_child(this.next_button);
         this.add_child(this.title);
         this.add_child(this.next_level_label);
+        this.add_child(this.points_label);
        
         this.callback = function(){};
         
@@ -57,10 +68,13 @@
     GameWinAlert.prototype.layout = function(){
         
         var padding = 10;
-        this.title.set_position(this.width/2 - this.title.width/2,40);
+        this.title.set_position(this.width/2 - this.title.width/2,20);
 
-        this.next_level_label.set_position(this.width/2 - this.next_level_label.width/2,this.title.get_position().y + 40);
-        this.next_button.set_position(this.width/2 - this.next_button.width/2,this.next_level_label.get_position().y + 25);
+        this.next_level_label.set_position(this.width/2 - this.next_level_label.width/2,this.title.get_position().y + 30);
+        
+        this.points_label.set_position(this.width/2 - this.points_label.width/2,this.next_level_label.get_position().y + 30);
+        
+        this.next_button.set_position(this.width/2 - this.next_button.width/2,this.points_label.get_position().y + 30);
     };
     
     
@@ -82,7 +96,9 @@
         
          this.title.set({text: "Level Completed: "+ this.level });
         
-         this.next_level_label.set({text: "NEXT: "+ (this.level + 1) });
+         this.next_level_label.set({text: "Next Level: "+ (this.level + 1) });
+         
+         this.points_label.set({text: "Points: "+ this.points });
         
     };
     
