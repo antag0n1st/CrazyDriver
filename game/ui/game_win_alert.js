@@ -11,7 +11,10 @@
         
         this.level = level_completed;
         this.points = 0;
-        this.set_size(250,150);
+        
+        
+        this.image = ContentManager.images.message_box.image;
+        this.set_size(this.image.width,this.image.height);
         
         this.priority = 19;
         
@@ -21,7 +24,8 @@
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
-            text_size : 16
+            text_font_name : 'Sofadi One',
+            text_size : 22
         });
         
         
@@ -31,7 +35,8 @@
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
-            text_size : 16
+            text_font_name : 'Sofadi One',
+            text_size : 18
         });
         
         this.points_label = new Label();
@@ -40,14 +45,27 @@
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
-            text_size : 16
+            text_font_name : 'Sofadi One',
+            text_size : 15
+        });
+        
+        
+        this.press_space_label = new Label();
+        this.press_space_label.set({
+            text: "or , press SPACE" ,
+            text_align : "left",
+            text_valign: 'middle',
+            text_color : "black",
+            text_font_name : 'Sofadi One',
+            text_size : 15
         });
         
                 
-        this.next_button = new Button({image:ContentManager.images.blank_black});
+        this.next_button = new Button({image:ContentManager.images.button});
         this.next_button.text = "next";
+        this.next_button.font_family = 'Sofadi One';
         this.next_button.text_color = "#ffffff";
-        this.next_button.font_size = 11;
+        this.next_button.font_size = 18;
         this.next_button.on_mouse_up = GameWinAlert.prototype.on_restart.bind(this);
         this.next_button.priority = 20;
         
@@ -57,6 +75,7 @@
         this.add_child(this.title);
         this.add_child(this.next_level_label);
         this.add_child(this.points_label);
+        this.add_child(this.press_space_label);
        
         this.callback = function(){};
         
@@ -68,13 +87,16 @@
     GameWinAlert.prototype.layout = function(){
         
         var padding = 10;
-        this.title.set_position(this.width/2 - this.title.width/2,20);
+        this.title.set_position(this.width/2 - this.title.width/2,85);
 
         this.next_level_label.set_position(this.width/2 - this.next_level_label.width/2,this.title.get_position().y + 30);
         
         this.points_label.set_position(this.width/2 - this.points_label.width/2,this.next_level_label.get_position().y + 30);
         
-        this.next_button.set_position(this.width/2 - this.next_button.width/2,this.points_label.get_position().y + 30);
+        this.next_button.set_position(this.width/2 - this.next_button.width/2,this.points_label.get_position().y + 20);
+    
+        this.press_space_label.set_position(this.width/2 - this.press_space_label.width/2,this.next_button.get_position().y + 50);
+        
     };
     
     
@@ -110,19 +132,9 @@
     };
     
     GameWinAlert.prototype.draw = function(context){
-        var position = this.bounds.pos.clone();
-        context.save();
-        context.beginPath();
-        
-        context.strokeStyle = "yellow";
-        context.fillStyle = "white";
-        
-        context.rect(position.x,position.y,this.width,this.height);
-        context.stroke();
-        context.fill();
-        
-        context.closePath();
-        context.restore();
+        var position = this.bounds.pos;
+       
+        context.drawImage(this.image,position.x,position.y);
         
     };
     

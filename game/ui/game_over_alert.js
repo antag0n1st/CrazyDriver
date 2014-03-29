@@ -10,7 +10,8 @@
         this.drawable_initialize();
         
               
-        this.set_size(250,150);
+        this.image = ContentManager.images.message_box.image;
+        this.set_size(this.image.width,this.image.height);
         
         this.points=0;
         this.level=0;
@@ -23,7 +24,8 @@
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
-            text_size : 16
+            text_font_name : 'Sofadi One',
+            text_size : 26
         });
         
         this.level_label = new Label();
@@ -32,7 +34,8 @@
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
-            text_size : 16
+            text_font_name : 'Sofadi One',
+            text_size : 18
         });
         
         this.points_label = new Label();
@@ -41,14 +44,16 @@
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
-            text_size : 16
+            text_font_name : 'Sofadi One',
+            text_size : 18
         });
         
                 
-        this.cancel_button = new Button({image:ContentManager.images.blank_black});
+        this.cancel_button = new Button({image:ContentManager.images.button});
         this.cancel_button.text = "Reload";
         this.cancel_button.text_color = "#ffffff";
-        this.cancel_button.font_size = 11;
+        this.cancel_button.font_family = "Sofadi One";
+        this.cancel_button.font_size = 18;
         this.cancel_button.on_mouse_up = GameOverAlert.prototype.on_restart.bind(this);
         this.cancel_button.priority = 20;
         
@@ -69,7 +74,7 @@
     GameOverAlert.prototype.layout = function(){
         
         var padding = 10;
-        this.title.set_position(this.width/2 - this.title.width/2,30);
+        this.title.set_position(this.width/2 - this.title.width/2,85);
 
         this.level_label.set_position(this.width/2 - this.level_label.width/2,this.title.get_position().y + 30);
         this.points_label.set_position(this.width/2 - this.points_label.width/2,this.level_label.get_position().y + 30);
@@ -107,19 +112,8 @@
     };
     
     GameOverAlert.prototype.draw = function(context){
-        var position = this.bounds.pos.clone();
-        context.save();
-        context.beginPath();
-        
-        context.strokeStyle = "yellow";
-        context.fillStyle = "white";
-        
-        context.rect(position.x,position.y,this.width,this.height);
-        context.stroke();
-        context.fill();
-        
-        context.closePath();
-        context.restore();
+        var position = this.bounds.pos;
+        context.drawImage(this.image,position.x,position.y);
         
     };
     

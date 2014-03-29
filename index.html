@@ -29,6 +29,8 @@ and open the template in the editor.
         <script type="text/javascript" src="lib/actions.js"></script>
         <script type="text/javascript" src="lib/move_to.js"></script>
         <script type="text/javascript" src="lib/state_machine.js" ></script>
+        <script type="text/javascript" src="lib/bezier.js" ></script>
+        <script type="text/javascript" src="lib/tween.js" ></script>
         
         <script type="text/javascript" src="game/game.js" ></script>
 
@@ -47,6 +49,7 @@ and open the template in the editor.
         <script type="text/javascript" src="game/win_car.js" ></script>
         <script type="text/javascript" src="game/smoke.js" ></script>
         <script type="text/javascript" src="game/bonus.js" ></script>
+        <script type="text/javascript" src="game/pointer.js" ></script>
         <script type="text/javascript" src="game/ui/game_over_alert.js" ></script>
         <script type="text/javascript" src="game/ui/game_win_alert.js" ></script>
         <script type="text/javascript" src="game/ui/screens/game_screen.js" ></script>
@@ -80,7 +83,39 @@ and open the template in the editor.
             q:before, q:after{content:""}
             blockquote, q{quotes:""""}
             strong{font-weight: bold;}
-
+            
+            @font-face
+            {
+            font-family: Shakey;
+            src: url('assets/fonts/ShakeySlabserif.ttf');
+            }
+            
+            @font-face
+            {
+            font-family: Klein;
+            src: url('assets/fonts/KleinsanBold.ttf');
+            }
+            
+            @font-face
+            {
+            font-family: Slab;
+            src: url('assets/fonts/BigSlabHammer.ttf');
+            }
+            
+            @font-face
+            {
+            font-family: 'Sofadi One';
+            src: url('assets/fonts/SofadiOne.woff');
+            }
+            
+            @font-face
+            {
+            font-family: 'Pacifico';
+            src: url('assets/fonts/Pacifico.woff');
+            }
+            
+            
+           
             #stage
             {
                 -webkit-transform-origin:  0% 0%;

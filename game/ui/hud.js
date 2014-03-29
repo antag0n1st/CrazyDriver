@@ -20,8 +20,9 @@
             text: "Level: ",
             text_align: "left",
             text_valign: 'middle',
-            text_color: "yellow",
-            text_size: 16
+            text_color: "#c4d742",
+            text_font_name: 'Pacifico',
+            text_size: 26
         });
         this.level_label.set_position(10, 20);
         
@@ -30,8 +31,9 @@
             text: "Level points: ",
             text_align: "left",
             text_valign: 'middle',
-            text_color: "yellow",
-            text_size: 16
+            text_color: "#c4d742",
+            text_font_name: 'Pacifico',
+            text_size: 26
         });
         this.level_points_label.set_position(120, 20);
         
@@ -40,8 +42,9 @@
             text: "Points: ",
             text_align: "left",
             text_valign: 'middle',
-            text_color: "yellow",
-            text_size: 16
+            text_color: "#c4d742",
+            text_font_name: 'Pacifico',
+            text_size: 26
         });
         this.points_label.set_position(650, 20);
         

@@ -40,7 +40,8 @@
         this.win_car = new WinCar();
         this.bonus = new Bonus();
 
-
+        this.pointer = new Pointer();
+        
         this.market = new Box(new Vector(496, 422), 174, 75).toPolygon();
 
         win_alert = this.win_alert = new GameWinAlert(1);
@@ -57,6 +58,7 @@
         this.add_child(this.win_car);
         this.add_child(this.hud);
         this.add_child(this.bonus);
+        this.add_child(this.pointer);
 
         this.kibo = new Kibo();
 
@@ -66,7 +68,9 @@
         this.is_right = false;
 
         this.is_game_over = false;
+        this.is_level_win = false;
         this.state = 0;
+        this.animation_state = '';
 
         this.player_speed = 1;
 
@@ -103,10 +107,21 @@
         this.kibo.up(['right'], function() {
             that.is_right = false;
         });
+        
+        this.kibo.up(['space'], function() {
+            that.space_pressed();
+        });
 
         this.reset_game_objects();
 
 
+    };
+    
+    GameScreen.prototype.space_pressed = function(){
+        if(this.is_game_over && this.is_level_win){
+            this.win_alert.remove_from_parent();
+            this.on_next_level();
+        }
     };
 
     GameScreen.prototype.reset_game_objects = function() {
@@ -116,6 +131,12 @@
 
         var pps = this.win_car_poss[this.win_car_pos];
         this.win_car.set_position(pps.x, pps.y);
+        
+        if(this.level === 1){            
+            this.pointer.set_position(pps.x + 130,pps.y+30);  
+            this.pointer.rotate_to(180);
+        }
+        
 
         this.bonus.set_position(Math.random_int(30, Config.screen_width - 30), Math.random_int(30, Config.screen_height - 30));
 
@@ -216,11 +237,17 @@
         this.level_points = 100;
         this.hud.level_points = this.level_points;
         this.state = 0;
+        this.animation_state = '';
         
         this.is_game_over = true;
-        this.player.play('idle');
+        this.player.play("idle"+this.animation_state);
         
-        this.add_child(this.over_alert);
+       // this.add_child(this.over_alert);
+       var end_pos = this.over_alert.get_position();
+       this.over_alert.set_position(end_pos.x,600);
+       this.add_child(this.over_alert);
+       var tween = new Tween(this.over_alert,end_pos,new Bezier(.14,1.07,.7,1.41),400,function(){});
+       tween.run();
     };
 
     GameScreen.prototype.game_win = function() {
@@ -228,11 +255,22 @@
         this.hud.points = this.points;
         this.level_points = 100;
         this.state = 0;
+        this.animation_state = '';
         this.is_game_over = true;
-        this.player.play('idle');
+        this.player.play("idle"+this.animation_state);
         this.win_alert.level = this.level;
         this.win_alert.points = this.points;
-        this.add_child(this.win_alert);
+        if(this.level === 1){
+            this.pointer.remove_from_parent();
+        }
+        
+       var end_pos = this.win_alert.get_position();
+       this.win_alert.set_position(end_pos.x,600);
+       this.add_child(this.win_alert);
+       var tween = new Tween(this.win_alert,end_pos,new Bezier(.14,1.07,.7,1.41),400,function(){});
+       tween.run();
+       
+        this.is_level_win = true;
     };
 
     GameScreen.prototype.on_restart_game = function() {
@@ -247,6 +285,7 @@
         this.on_restart_game();
         this.hud.level = this.level;
         this.hud.update();
+        this.is_level_win = false;
     };
 
     GameScreen.prototype.update = function() {
@@ -273,11 +312,20 @@
             //player win_car collision
             if (SAT.testPolygonPolygon(this.player.bounds, this.win_car.bounds, response))
             {
-                if (this.state == 0)
+                if (this.state == 0){
                     this.state = 1;
-
-                if (this.state == 2)
-                    this.game_win();
+                    if(this.level === 1){
+                        this.pointer.rotate_to(90);
+                        this.pointer.set_position(580,350); 
+                    }
+                    this.animation_state = '_empty';
+                }
+                    
+//
+//                if (this.state == 2){
+//                    this.game_win();
+//                }
+                    
 
                 var resolve_pos = response.a.pos.clone();
                 resolve_pos.sub(response.overlapV);
@@ -287,10 +335,13 @@
             }
 
             //player market collision
-            if (SAT.testPolygonPolygon(this.player.bounds, this.market))
+            if (SAT.testPolygonPolygon(this.player.bounds, this.market,response))
             {
-                if (this.state == 1)
-                    this.state = 2;
+                if ( response.aInB && this.state == 1){
+                   // this.state = 2;
+                    this.game_win();
+                }
+                response.clear();      
             }
 
             //player bonus collision
@@ -386,8 +437,9 @@
     };
 
     GameScreen.prototype.update_movement = function() {
-
-        this.player.play("run");
+                
+       
+        this.player.play("run"+this.animation_state);
 
         if (this.is_right && this.is_down)
         {
@@ -478,7 +530,7 @@
             return;
         }
 
-        this.player.play("idle");
+        this.player.play("idle"+this.animation_state);
     };
 
     GameScreen.prototype.checkCollisions = function()

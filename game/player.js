@@ -10,10 +10,12 @@
 
         var sprite_sheet = new SpriteSheet([{
                 image: ContentManager.images.player,
-                frames: {x: 8, y: 1},
+                frames: {x: 8, y: 2},
                 animations: {
                     run: {start: 0, end: 7, loop: true, duration: 800},
-                    idle: {start: 2, end: 2, loop: true, duration: 100}
+                    idle: {start: 2, end: 2, loop: true, duration: 100},
+                    run_empty: {start: 8, end: 15, loop: true, duration: 800},
+                    idle_empty: {start: 10, end: 10, loop: true, duration: 100}
                 }
                 , reg: {x: 0.5, y: 0.6, width: 0.4, height: 0.8}
             }]);

@@ -32,6 +32,11 @@
         ContentManager.add_image('parking', 'assets/images/parking.png');
         ContentManager.add_image('car', 'assets/images/car.png');
         ContentManager.add_image('bonus', 'assets/images/clock.jpg');
+        ContentManager.add_image('message_box', 'assets/images/message_box.png');
+        
+        ContentManager.add_image('button', 'assets/images/button.png');
+        ContentManager.add_image('button_highlighted', 'assets/images/button_highlighted.png');
+        ContentManager.add_image('pointer', 'assets/images/pointer.png');
 
         ContentManager.download_images(this.stage, function() {            
             window.game.start();
