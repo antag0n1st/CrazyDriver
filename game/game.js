@@ -55,6 +55,11 @@
 
         window.game = this;
         this.navigator.add(new LoadingScreen());
+        
+        Ticker.add_listener(this);
+        // Targeting 30 FPS
+        Ticker.set_fps(30);
+        Ticker.start();
     };
 
 
@@ -69,10 +74,7 @@
         
         // we want to do some work before we update the canvas,
         // otherwise we could use Ticker.addListener(stage);
-        Ticker.add_listener(this);
-        // Targeting 30 FPS
-        Ticker.set_fps(30);
-        Ticker.start();
+        
     };
 
 

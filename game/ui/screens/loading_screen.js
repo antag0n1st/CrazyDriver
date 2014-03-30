@@ -42,7 +42,7 @@
          var loaded = ContentManager.loaded_resources;
          
          var loading = loaded/to_load;
-         loading = loading ? loading : 100;
+         loading = loading ? loading*100 : 100;
          
         //  if(ContentManager.loaded_resources == ContentManager.count_resources){
          
@@ -68,7 +68,7 @@
     };
     
     LoadingScreen.prototype.clear = function(context){
-        
+        context.clearRect(0,0,Config.screen_width,Config.screen_height);
     };
     
     window.LoadingScreen = LoadingScreen;
