@@ -47,11 +47,14 @@
         ContentManager.add_sound('car', 'assets/sounds/car.mp3');
         ContentManager.add_sound('crash', 'assets/sounds/crash.mp3');
 
+        
+
         ContentManager.download_resources(this.stage, function() {            
             window.game.start();
         });
 
         window.game = this;
+        this.navigator.add(new LoadingScreen());
     };
 
 
@@ -59,7 +62,10 @@
 
     Game.prototype.start = function() {
 
-        this.navigator.add(new GameScreen());
+        this.navigator.remove_all();
+        
+        this.navigator.add(new HomeScreen());
+        
         
         // we want to do some work before we update the canvas,
         // otherwise we could use Ticker.addListener(stage);

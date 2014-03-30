@@ -502,7 +502,8 @@
 
     GameScreen.prototype.draw = function(context) {
 
-        context.drawImage(this.back_image, 0, 0);
+        var pos = this.bounds.pos;
+        context.drawImage(this.back_image, pos.x, pos.y);
         if(Config.debug){
             Drawable.draw_polygon(this.market, context);
         }
