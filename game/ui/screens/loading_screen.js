@@ -19,7 +19,7 @@
             text_size : 28
         });
         
-        
+        this.last_known_value = 0;
         
         this.add_child(this.label);
         this.label.set_position(this.width/2 - this.label.width/2,this.height/2 - this.label.height/2);
@@ -43,6 +43,15 @@
          
          var loading = loaded/to_load;
          loading = loading ? loading*100 : 100;
+         
+         loading = Math.round_decimal(loading,2);
+         
+         if(this.last_known_value === 0 && loading === 100){
+             loading = this.last_known_value;
+         }
+         
+         
+         
          
         //  if(ContentManager.loaded_resources == ContentManager.count_resources){
          
