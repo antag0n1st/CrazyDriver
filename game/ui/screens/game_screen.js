@@ -317,6 +317,27 @@
             {
                 if (this.state == 0){
                     this.state = 1;
+                    
+                    var car_message = new CarReachedMessage();
+                    car_message.z_index = 20;
+                    car_message.set_position(-200,250);
+                    this.add_child(car_message);
+                    
+                    var car_message_tween = new Tween(car_message,{x:400,y:250},new Bezier(.17,.67,.58,1.34),400,function(){
+                       
+                       var car_message_tween = new Tween(car_message,{x:400,y:250},new Bezier(1,1,1,1),1000,function(){
+
+                            var car_message_tween = new Tween(car_message,{x:1000,y:250},new Bezier(1,1,1,1),300,function(){
+                                this.object.remove_from_parent();
+                            });
+                            car_message_tween.run();
+
+                        });
+                        car_message_tween.run();
+                       
+                    });
+                    car_message_tween.run();
+                    
                     if(this.level === 1){
                         this.pointer.rotate_to(90);
                         this.pointer.set_position(580,350); 

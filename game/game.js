@@ -38,6 +38,7 @@
         ContentManager.add_image('button_highlighted', 'assets/images/button_highlighted.png');
         ContentManager.add_image('pointer', 'assets/images/pointer.png');
         ContentManager.add_image('points', 'assets/images/points.png');
+        ContentManager.add_image('return_the_cart', 'assets/images/return_the_cart.png');
 
         ContentManager.download_images(this.stage, function() {            
             window.game.start();
