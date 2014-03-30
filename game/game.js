@@ -39,8 +39,15 @@
         ContentManager.add_image('pointer', 'assets/images/pointer.png');
         ContentManager.add_image('points', 'assets/images/points.png');
         ContentManager.add_image('return_the_cart', 'assets/images/return_the_cart.png');
+        
+        ContentManager.add_sound('footsteps', 'assets/sounds/footsteps.mp3');
+        ContentManager.add_sound('collect', 'assets/sounds/collect.mp3');
+        ContentManager.add_sound('win', 'assets/sounds/win.mp3');
+        ContentManager.add_sound('appear', 'assets/sounds/appear.wav');
+        ContentManager.add_sound('car', 'assets/sounds/car.mp3');
+        ContentManager.add_sound('crash', 'assets/sounds/crash.mp3');
 
-        ContentManager.download_images(this.stage, function() {            
+        ContentManager.download_resources(this.stage, function() {            
             window.game.start();
         });
 

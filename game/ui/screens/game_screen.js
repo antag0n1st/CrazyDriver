@@ -9,6 +9,10 @@
 
     GameScreen.prototype.initialize = function() {
         this.screen_initialize();
+        
+        
+        
+        
 
         this.back_image = ContentManager.images.parking.image;
 
@@ -31,6 +35,8 @@
         this.current_second = 0;
 
         this.player = new Player();
+        
+        ContentManager.sounds.car.volume(0.01).loop(true).play();
 
         this.win_car_poss = [{x: 46, y: 50}, {x: 100, y: 50}, {x: 152, y: 50}, {x: 204, y: 50}, {x: 46, y: 180}, {x: 46, y: 250}];
 
@@ -233,6 +239,8 @@
         log(this.over_alert.points);
         log(this.over_alert.level);
         
+        ContentManager.sounds.crash.volume(0.5).play();
+        
        // this.points = 0;
         this.hud.points = this.points;
       //  this.level = 1;
@@ -244,6 +252,8 @@
         
         this.is_game_over = true;
         this.player.play("idle"+this.animation_state);
+        this.player.is_waling = false;
+        this.player.sound.stop();
         
        // this.add_child(this.over_alert);
        var end_pos = this.over_alert.get_position();
@@ -254,6 +264,9 @@
     };
 
     GameScreen.prototype.game_win = function() {
+        
+        ContentManager.sounds.win.volume(0.6).play();
+        
         this.points = this.points + this.level_points;
         this.hud.points = this.points;
         this.level_points = 100;
@@ -261,6 +274,8 @@
         this.animation_state = '';
         this.is_game_over = true;
         this.player.play("idle"+this.animation_state);
+        this.player.is_waling = false;
+        this.player.sound.stop();
         this.win_alert.level = this.level;
         this.win_alert.points = this.points;
         if(this.level === 1){
@@ -318,6 +333,8 @@
                 if (this.state == 0){
                     this.state = 1;
                     
+                    ContentManager.sounds.appear.volume(0.7).play();
+                    
                     var car_message = new CarReachedMessage();
                     car_message.z_index = 20;
                     car_message.set_position(-200,250);
@@ -343,6 +360,10 @@
                         this.pointer.set_position(580,350); 
                     }
                     this.animation_state = '_empty';
+                    if(this.player.is_walking){
+                        this.player.play("run"+this.animation_state);
+                    }
+                    
                 }
                     
 //
@@ -373,6 +394,9 @@
             //player bonus collision
             if (SAT.testPolygonPolygon(this.player.bounds, this.bonus.bounds))
             {
+                
+                ContentManager.sounds.collect.volume(0.2).play();
+                
                 var points = new Points();
                 points.set_position(this.bonus.get_position().x,this.bonus.get_position().y);
                 points.z_index = 20;
@@ -488,8 +512,12 @@
 
     GameScreen.prototype.update_movement = function() {
                 
-       
-        this.player.play("run"+this.animation_state);
+       if(!this.player.is_walking &&(this.is_right || this.is_down || this.is_up || this.is_left)){
+            this.player.play("run"+this.animation_state);
+            this.player.is_walking = true;
+            this.player.sound.play();
+       }
+        
 
         if (this.is_right && this.is_down)
         {
@@ -580,7 +608,12 @@
             return;
         }
 
-        this.player.play("idle"+this.animation_state);
+        if(this.player.is_walking){
+            this.player.play("idle"+this.animation_state);
+            this.player.is_walking = false;
+            this.player.sound.pause();
+        }
+        
     };
 
     GameScreen.prototype.checkCollisions = function()

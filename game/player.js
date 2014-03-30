@@ -22,6 +22,11 @@
 
         this.animation_initialize(sprite_sheet);
 
+        this.sound = ContentManager.sounds.footsteps;
+        this.sound.loop(true);
+        this.sound.volume(0.2);
+        
+        this.is_walking = false;
     
         this.speed = 85 / 1000;
         this.velocity = new Vector();
@@ -32,8 +37,6 @@
         this.factor_w=0.9;
         this.factor_h=0.4;
         
-        this.play("run");
-
         this.collider = new SAT.Box(new SAT.Vector(0, 0), this.width * this.factor_w, this.height * this.factor_h).toPolygon();
         this.collider.translate(-this.width*this.factor_w / 2, -this.height*this.factor_h / 2);
 
