@@ -121,6 +121,9 @@
         if(this.is_game_over && this.is_level_win){
             this.win_alert.remove_from_parent();
             this.on_next_level();
+        }else if(this.is_game_over){
+            this.over_alert.remove_from_parent();
+            this.on_restart_game();
         }
     };
 
@@ -230,10 +233,10 @@
         log(this.over_alert.points);
         log(this.over_alert.level);
         
-        this.points = 0;
+       // this.points = 0;
         this.hud.points = this.points;
-        this.level = 1;
-        this.hud.level = 1;
+      //  this.level = 1;
+      //  this.hud.level = 1;
         this.level_points = 100;
         this.hud.level_points = this.level_points;
         this.state = 0;
@@ -331,8 +334,9 @@
                 resolve_pos.sub(response.overlapV);
                 this.player.set_position(resolve_pos.x, resolve_pos.y);
 
-                response.clear();
+                
             }
+            response.clear();
 
             //player market collision
             if (SAT.testPolygonPolygon(this.player.bounds, this.market,response))
@@ -341,14 +345,29 @@
                    // this.state = 2;
                     this.game_win();
                 }
-                response.clear();      
+                     
             }
+            response.clear(); 
 
             //player bonus collision
             if (SAT.testPolygonPolygon(this.player.bounds, this.bonus.bounds))
             {
+                var points = new Points();
+                points.set_position(this.bonus.get_position().x,this.bonus.get_position().y);
+                points.z_index = 20;
+                this.add_child(points);
+                var bonus_tween = new Tween(points,{x:points.position.x,y:points.position.y-80},new Bezier(.11,.77,.5,1),600,function(){
+                    
+                    var bonus_tween_alpha = new TweenAlpha(points,0,new Bezier(1,1,1,1),300,function(){
+                        this.object.remove_from_parent();
+                    });
+                    bonus_tween_alpha.run();
+                    
+                });
+                bonus_tween.run();
+                
                 this.bonus.set_position(Math.random_int(30, Config.screen_width - 30), Math.random_int(30, Config.screen_height - 30));
-                this.level_points += 5;
+                this.level_points += 10;
             }
 
             //win_car bonus collision
@@ -377,6 +396,7 @@
                 {
                     var bounce = response.overlapN;
                     response.a.pos.sub(response.overlapV);
+                    car.set_position(response.a.pos.x,response.a.pos.y);
 
                     var normal_len = bounce.dot(car.velocity);
                     var normal = {x: bounce.x * normal_len, y: bounce.y * normal_len};
@@ -386,14 +406,16 @@
 
                     car.rotate(angle);
 
-                    response.clear();
+                    
                 }
+                response.clear();
 
                 //car market collision
                 if (SAT.testPolygonPolygon(car.bounds, this.market, response))
                 {
                     var bounce = response.overlapN;
                     response.a.pos.sub(response.overlapV);
+                    car.set_position(response.a.pos.x,response.a.pos.y);
 
                     var normal_len = bounce.dot(car.velocity);
                     var normal = {x: bounce.x * normal_len, y: bounce.y * normal_len};
@@ -403,25 +425,29 @@
 
                     car.rotate(angle);
 
-                    response.clear();
+                    
                 }
+                response.clear();
 
                 //car car collision
                 for (var j in this.cars)
                 {
                     var another_car = this.cars[j];
 
-                    if (car != another_car && SAT.testPolygonPolygon(another_car.bounds, car.bounds, response))
+                    if (car != another_car && SAT.testPolygonPolygon(car.bounds,another_car.bounds, response))
                     {
-                        var resolve_pos = response.a.pos.clone();
-                        resolve_pos.sub(response.overlapV);
-                        another_car.set_position(resolve_pos.x, resolve_pos.y);
+                        
+                        response.a.pos.sub(response.overlapV);
+                        car.set_position(response.a.pos.x,response.a.pos.y);
+                        
                         var angle = Math.random_int(0, 30);
-                        another_car.velocity.setAngle(Math.degrees_to_radians(another_car.angle - 15 + angle - 90));
-                        another_car.rotate_to(another_car.angle - 15 + angle);
+                        car.velocity.setAngle(Math.degrees_to_radians(car.angle - 15 + angle - 90));
+                        car.rotate_to(car.angle - 15 + angle);
 
-                        response.clear();
+                        
                     }
+                    
+                    response.clear();
                 }
             }
         }
@@ -432,7 +458,10 @@
     GameScreen.prototype.draw = function(context) {
 
         context.drawImage(this.back_image, 0, 0);
-        Drawable.draw_polygon(this.market, context);
+        if(Config.debug){
+            Drawable.draw_polygon(this.market, context);
+        }
+        
 
     };
 
