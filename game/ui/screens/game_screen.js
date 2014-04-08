@@ -10,10 +10,6 @@
     GameScreen.prototype.initialize = function() {
         this.screen_initialize();
         
-        
-        
-        
-
         this.back_image = ContentManager.images.parking.image;
 
         this.level = 1;
@@ -420,11 +416,19 @@
             {
                 this.bonus.set_position(Math.random_int(30, Config.screen_width - 30), Math.random_int(30, Config.screen_height - 30));
             }
+            
+            var nearest_car_distance = 1000;
 
             for (var i in this.cars)
             {
                 var car = this.cars[i];
                 var velocity = car.velocity;
+                
+                var car_distance = Math.get_distance(this.player.bounds.pos,car.bounds.pos);
+                
+                if(car_distance < nearest_car_distance ){
+                    nearest_car_distance = car_distance;
+                }
 
                 car.move();
 
@@ -495,6 +499,11 @@
                     response.clear();
                 }
             }
+            
+            var intesity = Math.map(nearest_car_distance,0,300,0.15,0.01);
+            intesity = Math.clamp(intesity,0.01,0.15);
+         
+             ContentManager.sounds.car.volume(intesity);
         }
 
         this.hud.update();

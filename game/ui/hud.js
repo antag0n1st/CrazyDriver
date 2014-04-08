@@ -21,10 +21,10 @@
             text_align: "left",
             text_valign: 'middle',
             text_color: "#c4d742",
-            text_font_name: 'Pacifico',
-            text_size: 26
+            text_font_name: 'Special Elite',
+            text_size: 28
         });
-        this.level_label.set_position(10, 20);
+        this.level_label.set_position(20, 30);
         
         this.level_points_label = new Label();
         this.level_points_label.set({
@@ -32,10 +32,10 @@
             text_align: "left",
             text_valign: 'middle',
             text_color: "#c4d742",
-            text_font_name: 'Pacifico',
-            text_size: 26
+            text_font_name: 'Special Elite',
+            text_size: 28
         });
-        this.level_points_label.set_position(120, 20);
+        this.level_points_label.set_position(170, 30);
         
         this.points_label = new Label();
         this.points_label.set({
@@ -43,10 +43,10 @@
             text_align: "left",
             text_valign: 'middle',
             text_color: "#c4d742",
-            text_font_name: 'Pacifico',
-            text_size: 26
+            text_font_name: 'Special Elite',
+            text_size: 28
         });
-        this.points_label.set_position(650, 20);
+        this.points_label.set_position(600, 30);
         
         this.add_child(this.level_label);
         this.add_child(this.level_points_label);
