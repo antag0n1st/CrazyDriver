@@ -10,10 +10,6 @@
     GameScreen.prototype.initialize = function() {
         this.screen_initialize();
         
-        
-        
-        
-
         this.back_image = ContentManager.images.parking.image;
 
         this.level = 1;
@@ -21,7 +17,7 @@
         this.max_level_points = 100;
         this.min_level_points = 20;
         this.points = 0;
-        this.start_cars = 2;
+        this.start_cars = 6;
         this.retry_counter=0;
         this.retry_penalty = 20;
         this.level_difficulty = 1;
@@ -239,8 +235,6 @@
     GameScreen.prototype.game_over = function() {
         this.over_alert.points = this.points;
         this.over_alert.level = this.level;
-        log(this.over_alert.points);
-        log(this.over_alert.level);
         
         ContentManager.sounds.crash.volume(0.5).play();
         
