@@ -44,7 +44,7 @@ Car.prototype = new Animation();
                 var distance_traveled = Math.get_distance(this.start_position, pos);
                 var distance_to_travel = Math.get_distance(this.start_position, this.end_position);
                 if (distance_traveled >= distance_to_travel){
-        if (this.bounds.pos.x - this.car_size > Config.screen_width || this.bounds.pos.x + + this.car_size < 0
+        if (this.bounds.pos.x - this.car_size > Config.screen_width || this.bounds.pos.x + this.car_size < 0
                 || this.bounds.pos.y - this.car_size > Config.screen_height || this.bounds.pos.y + this.car_size < 0)
                 this.callback(this);
         }
