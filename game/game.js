@@ -28,6 +28,8 @@
         ContentManager.add_image('smoke', 'assets/images/smoke.png');
         
         ContentManager.add_image('car_animation', 'assets/images/car_animation.png');
+        ContentManager.add_image('blue_car_animation', 'assets/images/blue_car_animation.png');
+        ContentManager.add_image('yellow_car_animation', 'assets/images/yellow_car_animation.png');
         ContentManager.add_image('player', 'assets/images/player.png');
         ContentManager.add_image('parking', 'assets/images/parking.png');
         ContentManager.add_image('car', 'assets/images/car.png');
@@ -36,9 +38,21 @@
         
         ContentManager.add_image('button', 'assets/images/button.png');
         ContentManager.add_image('button_highlighted', 'assets/images/button_highlighted.png');
+        ContentManager.add_image('play_button', 'assets/images/play_button.png');
+        ContentManager.add_image('play_button_highlighted', 'assets/images/play_button_highlighted.png');
         ContentManager.add_image('pointer', 'assets/images/pointer.png');
         ContentManager.add_image('points', 'assets/images/points.png');
         ContentManager.add_image('return_the_cart', 'assets/images/return_the_cart.png');
+        
+        ContentManager.add_image('lemon', 'assets/images/lemon.png');
+        ContentManager.add_image('apple', 'assets/images/apple.png');
+        ContentManager.add_image('strawberry', 'assets/images/strawberry.png');
+        ContentManager.add_image('cherry', 'assets/images/cherry.png');
+        ContentManager.add_image('banana', 'assets/images/banana.png');
+        
+        ContentManager.add_image('market_background', 'assets/images/market_background.jpg');
+        ContentManager.add_image('front_back', 'assets/images/front_back.png');
+        ContentManager.add_image('car_smoke', 'assets/images/car_smoke.png');
         
         ContentManager.add_sound('footsteps', 'assets/sounds/footsteps.mp3');
         ContentManager.add_sound('collect', 'assets/sounds/collect.mp3');

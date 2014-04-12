@@ -68,7 +68,7 @@
             text_valign: 'middle',
             text_color : "black",
             text_font_name : 'Sofadi One',
-            text_size : 15
+            text_size : 18
         });
         
                 
@@ -99,7 +99,7 @@
     GameWinAlert.prototype.layout = function(){
         
         var padding = 10;
-        this.title.set_position(this.width/2 - this.title.width/2,85);
+        this.title.set_position(this.width/2 - this.title.width/2,65);
 
         this.next_level_label.set_position(this.width/2 - this.next_level_label.width/2,this.title.get_position().y + 30);
         

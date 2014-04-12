@@ -17,7 +17,7 @@
         this.max_level_points = 100;
         this.min_level_points = 20;
         this.points = 0;
-        this.start_cars = 6;
+        this.start_cars = 3;
         this.retry_counter=0;
         this.retry_penalty = 20;
         this.level_difficulty = 1;
@@ -26,10 +26,20 @@
 
         this.hud = new Hud();
         this.hud.z_index = 5;
-        this.hud.set_position(0, 0);
+        this.hud.set_position(0, -100);
         this.hud.level = this.level;
         this.hud.level_points = this.level_points;
         this.hud.points = this.points;
+        
+        var tween = new Tween(this.hud,{x:0,y:-100},new Bezier(1,1,1,1),1000,function(){
+              
+              var tween = new Tween(this.object,{x:0,y:0},new Bezier(1,1,1,1),1000,function(){
+
+              });
+              tween.run();
+              
+        });
+        tween.run();
 
         this.time_passed = 0;
         this.current_second = 0;
@@ -44,6 +54,7 @@
 
         this.win_car = new WinCar();
         this.bonus = new Bonus();
+        this.bonus.pulsate();
 
         this.pointer = new Pointer();
         
@@ -423,7 +434,9 @@
                 });
                 bonus_tween.run();
                 
+                this.bonus.change_image();
                 this.bonus.set_position(Math.random_int(30, Config.screen_width - 30), Math.random_int(30, Config.screen_height - 30));
+              
                 this.level_points += 10;
                 if(this.level_points > this.max_level_points)
                     this.level_points = this.max_level_points;
