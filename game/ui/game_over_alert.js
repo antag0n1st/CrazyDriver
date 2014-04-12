@@ -30,7 +30,7 @@
         
         this.level_label = new Label();
         this.level_label.set({
-            text: "Level: " + this.level ,
+            text: "Press Reload to try again level " + this.level ,
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
@@ -98,7 +98,7 @@
         game.input.add(this);
         game.input.add(this.cancel_button);  
         
-         this.level_label.set({text: "Level: "+ (this.level) });
+         this.level_label.set({text: "Press Reload to try again level " + this.level });
          
          this.points_label.set({text: "Points: "+ this.points });
         

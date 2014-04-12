@@ -11,6 +11,7 @@
         
         this.level = level_completed;
         this.points = 0;
+        this.level_points = 0;
         
         
         this.image = ContentManager.images.message_box.image;
@@ -39,9 +40,19 @@
             text_size : 18
         });
         
+        this.level_points_label = new Label();
+        this.level_points_label.set({
+            text: "Level points: "+ this.level_points ,
+            text_align : "left",
+            text_valign: 'middle',
+            text_color : "black",
+            text_font_name : 'Sofadi One',
+            text_size : 15
+        });
+        
         this.points_label = new Label();
         this.points_label.set({
-            text: "Points: "+ this.points ,
+            text: "Total points: "+ this.points ,
             text_align : "left",
             text_valign: 'middle',
             text_color : "black",
@@ -74,6 +85,7 @@
         this.add_child(this.next_button);
         this.add_child(this.title);
         this.add_child(this.next_level_label);
+        this.add_child(this.level_points_label);
         this.add_child(this.points_label);
         this.add_child(this.press_space_label);
        
@@ -91,7 +103,9 @@
 
         this.next_level_label.set_position(this.width/2 - this.next_level_label.width/2,this.title.get_position().y + 30);
         
-        this.points_label.set_position(this.width/2 - this.points_label.width/2,this.next_level_label.get_position().y + 30);
+        this.level_points_label.set_position(this.width/2 - this.level_points_label.width/2,this.next_level_label.get_position().y + 30);
+        
+        this.points_label.set_position(this.width/2 - this.points_label.width/2,this.level_points_label.get_position().y + 30);
         
         this.next_button.set_position(this.width/2 - this.next_button.width/2,this.points_label.get_position().y + 20);
     
@@ -120,7 +134,9 @@
         
          this.next_level_label.set({text: "Next Level: "+ (this.level + 1) });
          
-         this.points_label.set({text: "Points: "+ this.points });
+         this.points_label.set({text: "Total points: "+ this.points });
+         
+         this.level_points_label.set({text: "Level points: "+ this.level_points });
         
     };
     

@@ -14,8 +14,12 @@
 
         this.level = 1;
         this.level_points = 100;
+        this.max_level_points = 100;
+        this.min_level_points = 20;
         this.points = 0;
-        this.start_cars = 5;
+        this.start_cars = 6;
+        this.retry_counter=0;
+        this.retry_penalty = 20;
         this.level_difficulty = 1;
 
         this.cars = [];
@@ -37,7 +41,6 @@
         this.win_car_poss = [{x: 46, y: 50}, {x: 100, y: 50}, {x: 152, y: 50}, {x: 204, y: 50}, {x: 46, y: 180}, {x: 46, y: 250}];
 
         this.win_car_pos = Math.random_int(0, 5);
-        this.win_car_start_angle = Math.random_int(0, 1);
 
         this.win_car = new WinCar();
         this.bonus = new Bonus();
@@ -173,7 +176,7 @@
 
                 that.cars.push(car);
 
-            }, i * 700);
+            }, i * 400);
 
         }
 
@@ -232,17 +235,15 @@
     GameScreen.prototype.game_over = function() {
         this.over_alert.points = this.points;
         this.over_alert.level = this.level;
-        log(this.over_alert.points);
-        log(this.over_alert.level);
         
         ContentManager.sounds.crash.volume(0.5).play();
         
-       // this.points = 0;
         this.hud.points = this.points;
-      //  this.level = 1;
-      //  this.hud.level = 1;
-        this.level_points = 100;
-        this.hud.level_points = this.level_points;
+        this.max_level_points-=this.retry_penalty;
+        if(this.max_level_points<this.min_level_points)
+            this.max_level_points=this.min_level_points;
+        this.level_points = this.max_level_points;
+        //this.hud.level_points = this.level_points;
         this.state = 0;
         this.animation_state = '';
         
@@ -251,7 +252,10 @@
         this.player.is_waling = false;
         this.player.sound.stop();
         
-       // this.add_child(this.over_alert);
+        this.win_car_pos = Math.random_int(0, 5);
+        var pps = this.win_car_poss[this.win_car_pos];
+        this.win_car.set_position(pps.x, pps.y);
+        
        var end_pos = this.over_alert.get_position();
        this.over_alert.set_position(end_pos.x,600);
        this.add_child(this.over_alert);
@@ -263,9 +267,11 @@
         
         ContentManager.sounds.win.volume(0.6).play();
         
+        this.max_level_points = 100;
         this.points = this.points + this.level_points;
         this.hud.points = this.points;
-        this.level_points = 100;
+        this.win_alert.level_points = this.level_points;
+        this.level_points = this.max_level_points;
         this.state = 0;
         this.animation_state = '';
         this.is_game_over = true;
@@ -277,6 +283,10 @@
         if(this.level === 1){
             this.pointer.remove_from_parent();
         }
+        
+        this.win_car_pos = Math.random_int(0, 5);
+        var pps = this.win_car_poss[this.win_car_pos];
+        this.win_car.set_position(pps.x, pps.y);
         
        var end_pos = this.win_alert.get_position();
        this.win_alert.set_position(end_pos.x,600);
@@ -317,6 +327,12 @@
                 this.level_points--;
                 this.time_passed -= 1000;
 
+                if(this.level_points<0)
+                    this.level_points=0;
+                
+                if(this.level_points>this.max_level_points)
+                    this.level_points=this.max_level_points;
+                
                 this.hud.level_points = this.level_points;
                 this.hud.level = this.level;
             }
@@ -409,6 +425,9 @@
                 
                 this.bonus.set_position(Math.random_int(30, Config.screen_width - 30), Math.random_int(30, Config.screen_height - 30));
                 this.level_points += 10;
+                if(this.level_points > this.max_level_points)
+                    this.level_points = this.max_level_points;
+                this.hud.level_points = this.level_points;
             }
 
             //win_car bonus collision
