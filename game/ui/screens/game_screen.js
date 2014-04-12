@@ -262,6 +262,8 @@
         this.player.play("idle"+this.animation_state);
         this.player.is_waling = false;
         this.player.sound.stop();
+        ContentManager.sounds.car.stop();
+        
         
         this.win_car_pos = Math.random_int(0, 5);
         var pps = this.win_car_poss[this.win_car_pos];
@@ -289,6 +291,8 @@
         this.player.play("idle"+this.animation_state);
         this.player.is_waling = false;
         this.player.sound.stop();
+        ContentManager.sounds.car.stop();
+        
         this.win_alert.level = this.level;
         this.win_alert.points = this.points;
         if(this.level === 1){
@@ -311,6 +315,7 @@
     GameScreen.prototype.on_restart_game = function() {
         
         this.reset_game_objects();
+        ContentManager.sounds.car.volume(0.01).loop(true).play();
         this.is_game_over = false;
 
     };
@@ -653,7 +658,7 @@
         if(this.player.is_walking){
             this.player.play("idle"+this.animation_state);
             this.player.is_walking = false;
-            this.player.sound.pause();
+            this.player.sound.stop();
         }
         
     };
