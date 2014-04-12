@@ -54,12 +54,12 @@
         ContentManager.add_image('front_back', 'assets/images/front_back.png');
         ContentManager.add_image('car_smoke', 'assets/images/car_smoke.png');
         
-        ContentManager.add_sound('footsteps', 'assets/sounds/footsteps.mp3');
-        ContentManager.add_sound('collect', 'assets/sounds/collect.mp3');
-        ContentManager.add_sound('win', 'assets/sounds/win.mp3');
-        ContentManager.add_sound('appear', 'assets/sounds/appear.wav');
-        ContentManager.add_sound('car', 'assets/sounds/car.mp3');
-        ContentManager.add_sound('crash', 'assets/sounds/crash.mp3');
+        ContentManager.add_sound('footsteps', 'assets/sounds/footsteps');
+        ContentManager.add_sound('collect', 'assets/sounds/collect');
+        ContentManager.add_sound('win', 'assets/sounds/win');
+        ContentManager.add_sound('appear', 'assets/sounds/appear');
+        ContentManager.add_sound('car', 'assets/sounds/car');
+        ContentManager.add_sound('crash', 'assets/sounds/crash');
 
         
 
